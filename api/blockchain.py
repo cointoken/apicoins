@@ -11,7 +11,7 @@ address_data = {
 not_found_data = {'status':404,'message':'not found','data':''}
 forbidden_data =  {'status':403,'message':'forbidden','data':''}
 gateway_timeout_data = {'status':504,'message':'gateway timeout','data':''}
-
+internal_server_error_data  = {'status':200,'message':'internal server error','data':''}
 
 def get_jsonaddress(address):
     address_data['data']['address'] =  address
@@ -51,8 +51,14 @@ def not_found(error):
 
 
 @app.errorhandler(504)
-def not_found(error):
-    return make_response(jsonify(not_found_data),404)
+def gateway_timeout(error):
+    return make_response(jsonify(gateway_timeout_data),504)
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return make_response(jsonify(internal_server_error_data),500)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='8080')
