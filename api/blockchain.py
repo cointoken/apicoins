@@ -11,7 +11,7 @@ address_data = {
 not_found_data = {'status':404,'message':'not found','data':''}
 forbidden_data =  {'status':403,'message':'forbidden','data':''}
 gateway_timeout_data = {'status':504,'message':'gateway timeout','data':''}
-internal_server_error_data  = {'status':200,'message':'internal server error','data':''}
+internal_server_error_data  = {'status':500,'message':'internal server error','data':''}
 
 def get_jsonaddress(address):
     address_data['data']['address'] =  address

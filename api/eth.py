@@ -8,6 +8,6 @@ class Eth(object):
         self.rpc_eth = Client(self.rpc_ip,self.rpc_port)
 
 
-    def getnewaddress():
+    def getnewaddress(self):
     	return self.rpc_eth.get_coinbase()
 
