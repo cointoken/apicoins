@@ -1,5 +1,4 @@
-from eth_rpc_client import Client
-
+from eth_rpc_client import Client # ethereum-rpc-client
 
 class Eth(object):
 	def __init__(self,rpc_port):
