@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,make_response,request
-from api.coins.btc import Btc
-from api.coins.eth import Eth
+from coins.btc import Btc
+from coins.eth import Eth
 import datas
 
 app = Flask(__name__)
