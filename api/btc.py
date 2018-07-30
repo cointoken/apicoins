@@ -6,7 +6,7 @@ class Btc(object):
         self.rpc_user = rpc_user
         self.rpc_password = rpc_password
         self.rpc_port = rpc_port
-	    self.rpc_connection = AuthServiceProxy("http://%s:%s@%s:%s"%(self.rpc_user,self.rpc_password,self.rpc_ip,self.rpc_port))
+        self.rpc_connection = AuthServiceProxy("http://%s:%s@%s:%s"%(self.rpc_user,self.rpc_password,self.rpc_ip,self.rpc_port))
 
 
     def getnewaddress(self):
