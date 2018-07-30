@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,make_response,request
 from btc import Btc
-
+from eth import Eth
 
 app = Flask(__name__)
 address_data = {
@@ -8,6 +8,9 @@ address_data = {
     'message': 'success',
     'data': { 'address': '' }
 }
+not_found_data = {'status':404,'message':'not found','data':''}
+forbidden_data =  {'status':403,'message':'forbidden','data':''}
+gateway_timeout_data = {'status':504,'message':'gateway timeout','data':''}
 
 
 def get_jsonaddress(address):
@@ -30,16 +33,26 @@ def getnewaddress(name,methods=['GET']):
         ltc = Btc(9337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
         return get_jsonaddress(ltc.getnewaddress())
     elif name=='eth':
-        pass
+        eth = Eth(8545)
+        return get_jsonaddress(eth.getnewaddress())
     elif name=='etc':
-        pass
+        etc = Eth(8546)
+        return get_jsonaddress(etc.getnewaddress())
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    return make_response(jsonify(not_found_data),403)
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'status':404,'message':'not found','data':''}),404)
+    return make_response(jsonify(not_found_data),404)
 
 
+@app.errorhandler(504)
+def not_found(error):
+    return make_response(jsonify(not_found_data),404)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port='8080')
