@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,make_response,request
-from btc import Btc
-from eth import Eth
+from coins.btc import Btc
+from coins.eth import Eth
 
 app = Flask(__name__)
 address_data = {
@@ -40,6 +40,12 @@ def getnewaddress(name,methods=['GET']):
         return get_jsonaddress(etc.getnewaddress())
 
 
+@app.route('/api/v1/validateaddress/<name>/<address>')
+def validateaddress(name,address):
+      
+
+
+
 @app.errorhandler(403)
 def forbidden(error):
     return make_response(jsonify(not_found_data),403)
@@ -50,14 +56,17 @@ def not_found(error):
     return make_response(jsonify(not_found_data),404)
 
 
+@app.errorhandler(500)
+def internal_server_error(error):
+    return make_response(jsonify(internal_server_error_data),500)
+
+
 @app.errorhandler(504)
 def gateway_timeout(error):
     return make_response(jsonify(gateway_timeout_data),504)
 
 
-@app.errorhandler(500)
-def internal_server_error(error):
-    return make_response(jsonify(internal_server_error_data),500)
+
 
 
 if __name__ == "__main__":
