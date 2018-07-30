@@ -1,24 +1,44 @@
-from flask import Flask,jsonify
-from flask.
+from flask import Flask,jsonify,make_response,request
 from btc import Btc
 
+
 app = Flask(__name__)
+address_data = {
+    'status': 200,
+    'message': 'success',
+    'data': { 'address': '' }
+}
+
+
+def get_jsonaddress(address):
+    address_data['data']['address'] =  address
+    return jsonify(address_data)
+    
 
 @app.route('/api/v1/getnewaddress/<name>')
 def getnewaddress(name,methods=['GET']):
     if name=='btc':
-        print('btc')
     	btc = Btc(8332,'apx','DEOXMEIO943JKDJFIE3312DFKIEOK')
-    	return jsonify({'status': 200, 'message': 'success', 'data': { 'address': btc.getnewaddress()}})
+        return get_jsonaddress(btc.getnewaddress())
     elif name=='bch':
-        print('other')
+        bch = Btc(8336,'bch','FEOPQSUOEODKLJAKLIEQPLALMNMXKIOQ')
+        return get_jsonaddress(bch.getnewaddress())
     elif name=='usdt':
         usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
-        return jsonify({'status': 200, 'message': 'success', 'data': { 'address': usdt.getnewaddress()}})
+        return get_jsonaddress(usdt.getnewaddress())
+    elif name=='ltc':
+        ltc = Btc(9337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
+        return get_jsonaddress(ltc.getnewaddress())
     elif name=='eth':
         pass
     elif name=='etc':
         pass
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'status':404,'message':'not found','data':''}),404)
+
 
 
 if __name__ == "__main__":
