@@ -12,6 +12,10 @@ class Btc(object):
     def getnewaddress(self):
         return self.rpc_connection.getnewaddress("")
     
+    
+    der getaccount(self,bitcoinaddress):
+        return self.rpc_connection.getaccount(bitcoinaddress)
+
 
     def listtransactions(self,account,count,from_):
     	return self.rpc_connection.listtransactions(account,count,from_)

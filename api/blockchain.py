@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 
 def get_success_json(frist_key,thrid_key,content):
-    return datas.success_infos[frist_key]['data'][thrid_key] =  content
+    datas.success_infos[frist_key]['data'][thrid_key] = content
+    return jsonify(datas.success_infos[frist_key])
 
 
 def init_coin(name):
@@ -38,8 +39,8 @@ def validateaddress(name,address):
         eth = init_coin(name)
 
 
-@app.route('/api/v1/getaccount/<address>')
-def getaccount(address):
+@app.route('/api/v1/getaccount/<name>/<address>')
+def getaccount(name,address):
     if datas.rpc_infos[name]['method']=='btc':
         btc = init_coin(name)
         return get_success_json('account','info',btc.getaccount(address))
