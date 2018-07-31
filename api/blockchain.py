@@ -40,7 +40,10 @@ def get_success_json(frist_key,thrid_key,content):
 
 @app.route('/api/v1/getnewaddress/<name>')
 def getnewaddress(name,methods=['GET']):
-    return get_success_json('new_address','address',instances[name].getnewaddress())
+    address = instances[name].getnewaddress()
+    if name == 'bch':
+        address = address[12:]  
+    return get_success_json('new_address','address',address)
 
 
 @app.route('/api/v1/validateaddress/<name>/<address>')
@@ -52,7 +55,7 @@ def validateaddress(name,address):
 def listtransactions(name,address):
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
-        result = instances[name].listtransactions('',1000,0)
+        result = instances[name].listtransactions('*',1000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
                 trans.append({'category':r['category'],'time':r['time'],'txid':r['txid']})

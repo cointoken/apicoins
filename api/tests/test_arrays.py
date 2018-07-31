@@ -67,7 +67,7 @@ datas = {
 
 
 if __name__=='__main__':
-   # js = json.loads(datas)
-    js = datas['data']['info']
-    for j in js:
-        #print(current_second_time-j['time'])
+    result =  "bitcoincash:qr30v9s0l99zgfq802wkjsgylwx4l9aeush2yvvpye"
+    result = result[12:]
+    print(result)
+ 
