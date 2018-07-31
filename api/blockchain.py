@@ -58,7 +58,7 @@ def listtransactions(name,address):
         result = instances[name].listtransactions('*',1000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                trans.append({'category':r['category'],'time':r['time'],'txid':r['txid']})
+                trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
 
 
