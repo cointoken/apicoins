@@ -5,15 +5,10 @@ import datas
 
 app = Flask(__name__)
 
-def get_newaddress_json(address):
-    datas.success_infos['new_address']['data']['address'] =  address
-    return jsonify(datas.success_infos['new_address'])
-    
 
-def get_validateaddress_json(info):
-    datas.success_infos['validate_address']['data']['info'] =  info
-    return jsonify(datas.success_infos['validate_address'])
-    
+def get_success_json(frist_key,thrid_key,content):
+    return datas.success_infos[frist_key]['data'][thrid_key] =  content
+
 
 def init_coin(name):
     if datas.rpc_infos[name]['method']=='btc':
@@ -28,17 +23,26 @@ def init_coin(name):
 def getnewaddress(name,methods=['GET']):
     if datas.rpc_infos[name]['method']=='btc':
         btc = init_coin(name)
-        return get_newaddress_json(btc.getnewaddress())
+        return get_success_json('new_address','address',btc.getnewaddress())
     elif datas.rpc_infos[name]['method']=='eth':
         eth = init_coin(name)
-        return get_newaddress_json(eth.getnewaddress())
+        return get_success_json('new_address','address',eth.getnewaddress())
 
 
 @app.route('/api/v1/validateaddress/<name>/<address>')
 def validateaddress(name,address):
     if datas.rpc_infos[name]['method']=='btc':
         btc = init_coin(name)
-        return get_validateaddress_json(btc.validateaddress(address))
+        return get_success_json('validate_address','info',btc.validateaddress(address))
+    elif datas.rpc_infos[name]['method']=='eth':
+        eth = init_coin(name)
+
+
+@app.route('/api/v1/getaccount/<address>')
+def getaccount(address):
+    if datas.rpc_infos[name]['method']=='btc':
+        btc = init_coin(name)
+        return get_success_json('account','info',btc.getaccount(address))
 
 
 @app.errorhandler(403)
