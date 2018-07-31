@@ -5,42 +5,40 @@ import datas
 
 app = Flask(__name__)
 
-def get_jsonaddress(address):
-    datas.error_infos['success']['data']['address'] =  address
-    return jsonify(datas.error_infos['success'])
+def get_newaddress_json(address):
+    datas.success_infos['new_address']['data']['address'] =  address
+    return jsonify(datas.success_infos['new_address'])
     
+
+def get_validateaddress_json(info):
+    datas.success_infos['validate_address']['data']['info'] =  info
+    return jsonify(datas.success_infos['validate_address'])
     
+
+def init_coin(name):
+    if name=='btc':
+        btc = Btc(datas.rpc_infos[name]['rpc_port'],datas.rpc_infos[name]['rpc_user'],datas.rpc_infos[name]['rpc_password'])
+        return btc
+    elif name=='eth':
+        eth = Eth(datas.rpc_infos[name]['rpc_port'])
+        return eth
+
+
 @app.route('/api/v1/getnewaddress/<name>')
 def getnewaddress(name,methods=['GET']):
     if datas.rpc_infos[name]['method']=='btc':
-        btc = Btc(datas.rpc_infos[name]['rpc_port'],datas.rpc_infos[name]['rpc_user'],datas.rpc_infos[name]['rpc_password'])
-        return get_jsonaddress(btc.getnewaddress())
+        btc = init_coin(name)
+        return get_newaddress_json(btc.getnewaddress())
     elif datas.rpc_infos[name]['method']=='eth':
-        eth = Eth(datas.rpc_infos[name]['rpc_port'])
-        return get_jsonaddress(eth.getnewaddress())
-    # if name=='btc':
-    # 	btc = Btc(8332,'apx','DEOXMEIO943JKDJFIE3312DFKIEOK')
-    #     return get_jsonaddress(btc.getnewaddress())
-    # elif name=='bch':
-    #     bch = Btc(8336,'bch','FEOPQSUOEODKLJAKLIEQPLALMNMXKIOQ')
-    #     return get_jsonaddress(bch.getnewaddress())
-    # elif name=='usdt':
-    #     usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
-    #     return get_jsonaddress(usdt.getnewaddress())
-    # elif name=='ltc':
-    #     ltc = Btc(9337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
-    #     return get_jsonaddress(ltc.getnewaddress())
-    # elif name=='eth':
-    #     eth = Eth(8545)
-    #     return get_jsonaddress(eth.getnewaddress())
-    # elif name=='etc':
-    #     etc = Eth(8546)
-    #     return get_jsonaddress(etc.getnewaddress())
+        eth = init_coin(name)
+        return get_newaddress_json(eth.getnewaddress())
 
 
 @app.route('/api/v1/validateaddress/<name>/<address>')
 def validateaddress(name,address):
-      pass
+    if datas.rpc_infos[name]['method']=='btc':
+        btc = init_coin(name)
+        return get_validateaddress_json(btc.validateaddress(address))
 
 
 @app.errorhandler(403)

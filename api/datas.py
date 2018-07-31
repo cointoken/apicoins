@@ -1,6 +1,5 @@
 
 error_infos = {
-    'success':{'status': 200,'message': 'success','data': { 'address': '' }},
     'not_found':{'status':404,'message':'not found','data':''},
     'forbidden':{'status':403,'message':'forbidden','data':''},
     'gateway_timeout':{'status':504,'message':'gateway timeout','data':''},
@@ -14,4 +13,9 @@ rpc_infos = {
 	'ltc':{'rpc_port':9337,'rpc_user':'exmoney','rpc_password':'TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP','method':'btc'},
 	'eth':{'rpc_port':8545,'method':'eth'},
 	'etc':{'rpc_port':8546,'method':'eth'}
+}
+
+success_infos={
+    'new_address':{'status': 200,'message': 'success','data': { 'address': '' }},
+	'validate_address':{'status': 200,'message': 'success','data': { 'info': '' }
 }
