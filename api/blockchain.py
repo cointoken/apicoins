@@ -16,10 +16,10 @@ def get_validateaddress_json(info):
     
 
 def init_coin(name):
-    if name=='btc':
+    if datas.rpc_infos[name]['method']=='btc':
         btc = Btc(datas.rpc_infos[name]['rpc_port'],datas.rpc_infos[name]['rpc_user'],datas.rpc_infos[name]['rpc_password'])
         return btc
-    elif name=='eth':
+    elif datas.rpc_infos[name]['method']=='eth':
         eth = Eth(datas.rpc_infos[name]['rpc_port'])
         return eth
 
