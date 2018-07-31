@@ -1,9 +1,7 @@
 from eth_rpc_client import Client # ethereum-rpc-client
 import re
-import singleton
 
 
-@singleton
 class Eth(object):
     def __init__(self,rpc_port):
         self.rpc_ip = '127.0.0.1'

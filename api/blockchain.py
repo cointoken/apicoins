@@ -5,6 +5,7 @@ from coins.eth import Eth
 from myjsonencoder import MyJSONEncoder
 import datas
 import util
+import time
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
@@ -16,14 +17,6 @@ instances = {'btc':None,
             'etc':None}
 
 
-def get_success_json(frist_key,thrid_key,content):
-    datas.success_infos[frist_key]['data'][thrid_key] = content
-    try:
-        return jsonify(datas.success_infos[frist_key])
-    except ValueError:
-        print(' No JSON object could be decoded')
-
-
 def init_coins():
     instances['btc'] = Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']['rpc_user'],datas.rpc_infos['btc']['rpc_password'])
     instances['ltc'] = Btc(datas.rpc_infos['ltc']['rpc_port'],datas.rpc_infos['ltc']['rpc_user'],datas.rpc_infos['ltc']['rpc_password'])
@@ -31,6 +24,18 @@ def init_coins():
     instances['bch'] = Btc(datas.rpc_infos['bch']['rpc_port'],datas.rpc_infos['bch']['rpc_user'],datas.rpc_infos['bch']['rpc_password'])
     instances['eth'] = Eth(datas.rpc_infos['eth']['rpc_port'])
     instances['etc'] = Eth(datas.rpc_infos['etc']['rpc_port'])
+
+
+def get_curr_seconds():
+    return int(round(time.time()))
+
+
+def get_success_json(frist_key,thrid_key,content):
+    datas.success_infos[frist_key]['data'][thrid_key] = content
+    try:
+        return jsonify(datas.success_infos[frist_key])
+    except ValueError:
+        print(' No JSON object could be decoded')
 
 
 @app.route('/api/v1/getnewaddress/<name>')
@@ -43,15 +48,16 @@ def validateaddress(name,address):
     return get_success_json('validate_address','info',instances[name].validateaddress(address))
 
 
-@app.route('/api/v1/gettranstatus/<name/<address>')
+@app.route('/api/v1/gettranstatus/<name>/<address>')
 def listtransactions(name,address):
+    trans = []
     if datas.rpc_infos[name]['method']=='btc':
         result = instances[name].listtransactions('',1000,0)
         for r in result:
-            if r['address'] == address:
-                if  (Util.get_curr_seconds()-r['time'])<1200:
-                    pass
-        #return get_success_json('transactions','info',btc.listtransactions('',1000,0))
+            if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
+                trans.append({'category':r['category'],'time':r['time'],'txid':r['txid']})
+        return get_success_json('transactions','info',trans)
+
 
 @app.errorhandler(403)
 def forbidden(error):
