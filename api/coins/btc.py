@@ -13,7 +13,7 @@ class Btc(object):
         return self.rpc_connection.getnewaddress("")
     
     
-    der getaccount(self,bitcoinaddress):
+    def getaccount(self,bitcoinaddress):
         return self.rpc_connection.getaccount(bitcoinaddress)
 
 

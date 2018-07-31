@@ -37,6 +37,7 @@ def validateaddress(name,address):
         return get_success_json('validate_address','info',btc.validateaddress(address))
     elif datas.rpc_infos[name]['method']=='eth':
         eth = init_coin(name)
+        return get_success_json('validate_address','info',eth.validateaddress(address)) 
 
 
 @app.route('/api/v1/getaccount/<name>/<address>')
@@ -44,6 +45,13 @@ def getaccount(name,address):
     if datas.rpc_infos[name]['method']=='btc':
         btc = init_coin(name)
         return get_success_json('account','info',btc.getaccount(address))
+
+
+@app.route('/api/v1/listtransactions/<name>')
+def listtransactions(name):
+    if datas.rpc_infos[name]['method']=='btc':
+        btc = init_coin(name)
+        return get_success_json('transactions','info',btc.listtransactions('',20,0))
 
 
 @app.errorhandler(403)

@@ -15,8 +15,9 @@ rpc_infos = {
 	'etc':{'rpc_port':8546,'method':'eth'}
 }
 
-success_infos={
+success_infos = {
     'new_address':{'status': 200,'message': 'success','data': { 'address': '' }},
 	'validate_address':{'status': 200,'message': 'success','data': { 'info': '' }},
-	'account':{'status': 200,'message': 'success','data': { 'info': '' }}
+	'account':{'status': 200,'message': 'success','data': { 'info': '' }},
+	'transactions':{'status': 200,'message': 'success','data': { 'info': '' }}
 }
