@@ -1,14 +1,18 @@
 from flask import Flask,jsonify,make_response,request
 from coins.btc import Btc
 from coins.eth import Eth
+from myjsonencoder import MyJSONEncoder
 import datas
 
 app = Flask(__name__)
-
+app.json_encoder = MyJSONEncoder
 
 def get_success_json(frist_key,thrid_key,content):
     datas.success_infos[frist_key]['data'][thrid_key] = content
-    return jsonify(datas.success_infos[frist_key])
+    try:
+        return jsonify(datas.success_infos[frist_key])
+    except ValueError:
+        print(' No JSON object could be decoded')
 
 
 def init_coin(name):
