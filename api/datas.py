@@ -8,10 +8,10 @@ error_infos = {
 }
 
 rpc_infos = {
-	'btc':{'rpc_port':8332,'rpc_user':'apx','rpc_password':'DEOXMEIO943JKDJFIE3312DFKIEOK','method':'get_btc_address'},
-	'usdt':{'rpc_port':8338,'rpc_user':'usdt','rpc_password':'DJKQIEOOKDKLAKQOOEXMXMLLWOO','method':'get_btc_address'},
-	'bch':{'rpc_port':8336,'rpc_user':'bch','rpc_password':'FEOPQSUOEODKLJAKLIEQPLALMNMXKIOQ','method':'get_btc_address'},
-	'ltc':{'rpc_port':9337,'rpc_user':'exmoney','rpc_password':'TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP','method':'get_btc_address'},
-	'eth':{'rpc_port':8545,'method':'get_eth_address'},
-	'etc':{'rpc_port':8546,'method':'get_eth_address'}
+	'btc':{'rpc_port':8332,'rpc_user':'apx','rpc_password':'DEOXMEIO943JKDJFIE3312DFKIEOK','method':'btc'},
+	'usdt':{'rpc_port':8338,'rpc_user':'usdt','rpc_password':'DJKQIEOOKDKLAKQOOEXMXMLLWOO','method':'btc'},
+	'bch':{'rpc_port':8336,'rpc_user':'bch','rpc_password':'FEOPQSUOEODKLJAKLIEQPLALMNMXKIOQ','method':'btc'},
+	'ltc':{'rpc_port':9337,'rpc_user':'exmoney','rpc_password':'TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP','method':'btc'},
+	'eth':{'rpc_port':8545,'method':'eth'},
+	'etc':{'rpc_port':8546,'method':'eth'}
 }

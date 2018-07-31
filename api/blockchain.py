@@ -9,21 +9,15 @@ def get_jsonaddress(address):
     datas.error_infos['success']['data']['address'] =  address
     return jsonify(datas.error_infos['success'])
     
-
-def get_btc_address(rpc_port,rpc_user,rpc_pwd):
-    btc = Btc(rpc_port,rpc_user,rpc_pwd)
-    return get_jsonaddress(btc.getnewaddress())
-
-
-def get_eth_address(rpc_port):
-    eth = Eth(rpc_port)
-    return get_jsonaddress(eth.getnewaddress())
-
-
+    
 @app.route('/api/v1/getnewaddress/<name>')
 def getnewaddress(name,methods=['GET']):
-    method = datas.rpc_infos.get(datas.rpc_infos[name]['method'],lambda:'not_found')
-    return method(datas.rpc_infos[name]['rpc_port'],datas.rpc_infos[name]['rpc_user'],datas.rpc_infos[name]['rpc_password'])
+    if datas.rpc_infos[name]['method']=='btc':
+        btc = Btc(datas.rpc_infos[name]['rpc_port'],datas.rpc_infos[name]['rpc_user'],datas.rpc_infos[name]['rpc_password'])
+        return get_jsonaddress(btc.getnewaddress())
+    elif datas.rpc_infos[name]['method']=='eth':
+        eth = Eth(datas.rpc_infos[name]['rpc_port'])
+        return get_jsonaddress(eth.getnewaddress())
     # if name=='btc':
     # 	btc = Btc(8332,'apx','DEOXMEIO943JKDJFIE3312DFKIEOK')
     #     return get_jsonaddress(btc.getnewaddress())
@@ -70,5 +64,5 @@ def gateway_timeout(error):
 
     
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port='8080')
+    app.run(host='0.0.0.0',port='8888')
 
