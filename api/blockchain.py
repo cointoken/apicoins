@@ -4,7 +4,6 @@ from coins.btc import Btc
 from coins.eth import Eth
 from myjsonencoder import MyJSONEncoder
 import datas
-import util
 import time
 
 app = Flask(__name__)
@@ -38,20 +37,33 @@ def get_success_json(frist_key,thrid_key,content):
         print(' No JSON object could be decoded')
 
 
-@app.route('/api/v1/getnewaddress/<name>')
+@app.route('/api/v1/getnewaddress/<string:name>')
 def getnewaddress(name,methods=['GET']):
-    address = instances[name].getnewaddress()
+    address = ''
+    try:
+        address = instances[name].getnewaddress()
+    except：
+        print(' No JSON object could be decoded')
+    finally:
+        init_coins()
+        address = instances[name].getnewaddress()
     if name == 'bch':
         address = address[12:]  
     return get_success_json('new_address','address',address)
 
 
-@app.route('/api/v1/validateaddress/<name>/<address>')
+@app.route('/api/v1/validateaddress/<string:name>/<string:address>')
 def validateaddress(name,address):
     return get_success_json('validate_address','info',instances[name].validateaddress(address))
 
 
-@app.route('/api/v1/gettranstatus/<name>/<address>')
+@app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
+def sendtoaddress(name,address,amount):
+    if  datas.rpc_infos[name]['method']=='btc':
+        return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
+
+
+@app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
@@ -60,8 +72,10 @@ def listtransactions(name,address):
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
                 trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
+    else:
+        pass
 
-
+        
 @app.errorhandler(403)
 def forbidden(error):
     return make_response(jsonify(datas.error_infos['forbidden']),403)

@@ -15,7 +15,8 @@ class Eth(object):
 
     def validateaddress(self,adddress):
         reobj = re.match('^0x[a-fA-F0-9]{40}',adddress)
-        if reobj:
-            return  {"valid_address": True}
-        else:
-            return  {"valid_address": False}
+        return {"valid_address": True} if reobj else {"valid_address": False}
+    
+
+    def get_transaction_by_hash(self,txn_hash):
+        return self.rpc_eth.get_transaction_by_hash(txn_hash)

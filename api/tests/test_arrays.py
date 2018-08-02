@@ -1,6 +1,7 @@
 
 import unittest
 import json
+import re
 
 datas = {
     "data": {
@@ -67,7 +68,9 @@ datas = {
 
 
 if __name__=='__main__':
-    result =  "bitcoincash:qr30v9s0l99zgfq802wkjsgylwx4l9aeush2yvvpye"
-    result = result[12:]
+    # result =  "bitcoincash:qr30v9s0l99zgfq802wkjsgylwx4l9aeush2yvvpye"
+    # result = result[12:]
+    # print(result)
+    reobj = re.match('^0x[a-fA-F0-9]{40}','0xeweioiqox12333')
+    result = {"valid_address": True} if reobj else {"valid_address": False}
     print(result)
- 

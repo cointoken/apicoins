@@ -19,5 +19,6 @@ success_infos = {
     'new_address':{'status': 200,'message': 'success','data': { 'address': '' }},
 	'validate_address':{'status': 200,'message': 'success','data': { 'info': '' }},
 	'account':{'status': 200,'message': 'success','data': { 'info': '' }},
-	'transactions':{'status': 200,'message': 'success','data': { 'info': '' }}
+	'transactions':{'status': 200,'message': 'success','data': { 'info': '' }},
+	'sendtoaddress':{'status': 200,'message': 'success','data': { 'info': '' }},
 }
