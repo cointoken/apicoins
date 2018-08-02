@@ -42,8 +42,8 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except：
-        print(' No JSON object could be decoded')
+    except ConnectionError,Exception,e:
+        print(e.message)
     finally:
         init_coins()
         address = instances[name].getnewaddress()
