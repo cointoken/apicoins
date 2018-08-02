@@ -98,5 +98,5 @@ def gateway_timeout(error):
     
 if __name__ == "__main__":
     init_coins()
-    app.run(host='0.0.0.0',port='8888')
+    app.run(host='0.0.0.0',port='8080')
 
