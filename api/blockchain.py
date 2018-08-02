@@ -42,7 +42,7 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except ConnectionError,Exception,e:
+    except Exception,e:
         print(e.message)
     finally:
         init_coins()
@@ -54,20 +54,37 @@ def getnewaddress(name,methods=['GET']):
 
 @app.route('/api/v1/validateaddress/<string:name>/<string:address>')
 def validateaddress(name,address):
-    return get_success_json('validate_address','info',instances[name].validateaddress(address))
+    validate = ''
+    try:
+        validate = instances[name].validateaddress(address)
+    except Exception,e:
+        print(e.message)
+    finally:
+        init_coins()
+        validate = instances[name].validateaddress(address)
+    return get_success_json('validate_address','info',validate)
 
 
 @app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
 def sendtoaddress(name,address,amount):
     if  datas.rpc_infos[name]['method']=='btc':
         return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
+    else：
+       
 
 
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
-        result = instances[name].listtransactions('*',1000,0)
+        result = ''
+        try:
+            result = instances[name].listtransactions('*',8000,0)
+        except Exception,e:
+            print(e.message)
+        finally:
+            init_coins()
+            result = instances[name].listtransactions('*',8000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
                 trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
