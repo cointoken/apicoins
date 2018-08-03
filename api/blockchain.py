@@ -80,7 +80,7 @@ def listtransactions(name,address):
         result = ''
         try:
             result = instances[name].listtransactions('*',8000,0)
-        except Exception,e:
+        except e:
             print(e.message)
         finally:
             init_coins()
