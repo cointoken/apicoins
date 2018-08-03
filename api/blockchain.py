@@ -42,8 +42,8 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except e:
-        print(e.message)
+    except:
+        print('error')
     finally:
         init_coins()
         address = instances[name].getnewaddress()
@@ -57,8 +57,8 @@ def validateaddress(name,address):
     validate = ''
     try:
         validate = instances[name].validateaddress(address)
-    except e:
-        print(e.message)
+    except:
+        print('error')
     finally:
         init_coins()
         validate = instances[name].validateaddress(address)
@@ -92,7 +92,7 @@ def listtransactions(name,address):
     else:
         pass
 
-        
+
 @app.errorhandler(403)
 def forbidden(error):
     return make_response(jsonify(datas.error_infos['forbidden']),403)
