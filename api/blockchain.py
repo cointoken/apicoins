@@ -42,7 +42,7 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except Exception,e:
+    except e:
         print(e.message)
     finally:
         init_coins()
@@ -57,7 +57,7 @@ def validateaddress(name,address):
     validate = ''
     try:
         validate = instances[name].validateaddress(address)
-    except Exception,e:
+    except e:
         print(e.message)
     finally:
         init_coins()
@@ -72,7 +72,7 @@ def sendtoaddress(name,address,amount):
     else：
         pass
 
-        
+
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
     trans = []
