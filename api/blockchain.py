@@ -70,9 +70,9 @@ def sendtoaddress(name,address,amount):
     if  datas.rpc_infos[name]['method']=='btc':
         return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
     else：
-       
+        pass
 
-
+        
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
     trans = []
