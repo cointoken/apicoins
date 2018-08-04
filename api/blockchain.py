@@ -5,6 +5,8 @@ from coins.eth import Eth
 from myjsonencoder import MyJSONEncoder
 import datas
 import time
+import sys
+
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
@@ -33,8 +35,8 @@ def get_success_json(frist_key,thrid_key,content):
     datas.success_infos[frist_key]['data'][thrid_key] = content
     try:
         return jsonify(datas.success_infos[frist_key])
-    except ValueError:
-        print(' No JSON object could be decoded')
+    except(TypeError,ValueError) as e:
+        print(e)
 
 
 @app.route('/api/v1/getnewaddress/<string:name>')
@@ -43,7 +45,8 @@ def getnewaddress(name,methods=['GET']):
     try:
         address = instances[name].getnewaddress()
     except:
-        print('error')
+        e = sys.exc_info()[0]
+        print(e)
     finally:
         init_coins()
         address = instances[name].getnewaddress()
@@ -58,7 +61,8 @@ def validateaddress(name,address):
     try:
         validate = instances[name].validateaddress(address)
     except:
-        print('error')
+        e = sys.exc_info()[0]
+        print(e)
     finally:
         init_coins()
         validate = instances[name].validateaddress(address)
