@@ -51,18 +51,22 @@ def get_errors_json(frist_key,content,status_code):
         logger.error(e)
 
 
+def not_found_json(name):
+    datas.error_type['users_errors']['interface_name'] = datas.interface_name[name]
+    datas.error_type['users_errors']['details'] = datas.users_errors['not_the_coin']
+    return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])   
+
+
 @app.route('/api/v1/getnewaddress/<string:name>')
 def getnewaddress(name,methods=['GET']):
     if name not in instances:
-        datas.error_type['users_errors']['interface_name'] = datas.interface_name['newaddress']
-        datas.error_type['users_errors']['details'] = datas.users_errors['not_the_coin']
-        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
+        return not_found_json('newaddress')
     try:
         instances[name] = objects[name]
         address = instances[name].getnewaddress()
     except Exception as e:
+        logger.error('getnewaddress:{}'.format(e))
         instances[name] = objects[name]
-        logger.error('getnewaddress'+e)
 
     address = instances[name].getnewaddress()
     if name == 'bch':
@@ -73,16 +77,14 @@ def getnewaddress(name,methods=['GET']):
 @app.route('/api/v1/validateaddress/<string:name>/<string:address>')
 def validateaddress(name,address):
     if name not in instances:
-        datas.error_type['users_errors']['interface_name'] = datas.interface_name['valiaddress']
-        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
-     
+        return not_found_json('valiaddress')
+
     try:
         instances[name] = objects[name]
         validate = instances[name].validateaddress(address)
     except Exception as e:
+        logger.error('validateaddress:{}'.format(e))
         instances[name] = objects[name]
-        logger.error('validateaddress'+e)
 
     validate = instances[name].validateaddress(address)
     if datas.rpc_infos[name]['method'] == 'btc':
@@ -101,9 +103,7 @@ def sendtoaddress(name,address,amount):
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
     if name not in instances:
-        datas.error_type['users_errors']['interface_name'] = datas.interface_name['transtatus']
-        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
+        return not_found_json('transtatus')
 
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
@@ -111,9 +111,9 @@ def listtransactions(name,address):
             instances[name] = objects[name]
             result = instances[name].listtransactions('*',8000,0)
         except Exception as e:
+            logger.error('gettranstatus:{}'.format(e))
             instances[name] = objects[name]
-            logger.error(e)
-           
+
         result = instances[name].listtransactions('*',8000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
