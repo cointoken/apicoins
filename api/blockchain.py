@@ -44,8 +44,7 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except:
-        e = sys.exc_info()[0]
+    except(ConnectionRefusedError,ConnectionRefusedError) as e:
         print(e)
     finally:
         init_coins()
@@ -109,6 +108,7 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_server_error(error):
+    datas.error_infos['internal_server_error']['data'] = {'error':error}
     return make_response(jsonify(datas.error_infos['internal_server_error']),500)
 
 

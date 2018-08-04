@@ -1,4 +1,6 @@
 
+# -*- coding:utf-8 -*-
+
 error_infos = {
     'not_found':{'status':404,'message':'not found','data':''},
     'forbidden':{'status':403,'message':'forbidden','data':''},
