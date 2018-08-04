@@ -1,17 +1,18 @@
 # -*- coding:utf-8 -*-
 from flask import Flask,jsonify,make_response,request
+import time
+import logging
+import logging.config
 from coins.btc import Btc
 from coins.eth import Eth
 from myjsonencoder import MyJSONEncoder
 import datas
-import time
 import config
-import logging
-import logging.config
 
 
 app = Flask(__name__)
-app.json_encoder = MyJSONEncoder
+app.json_encoder = MyJSONEncoder  
+
 logging.config.dictConfig(config.LOGGING_CONFIG)
 logger = logging.getLogger('default')
 
@@ -75,7 +76,8 @@ def validateaddress(name,address):
      
     instances[name] = objects[name]
     validate = instances[name].validateaddress(address)
-
+    if datas.rpc_infos[name]['method'] == 'btc':
+        validate = {"valid_address": True} if validate['isvalid'] else {"valid_address": False}
     return get_success_json('validate_address','info',validate)
 
 
