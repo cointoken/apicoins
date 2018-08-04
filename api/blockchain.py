@@ -25,7 +25,7 @@ objects =  {'btc': Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']
 }
 
 def init_coins():
-    for key,value in instances:
+    for key,value in instances.items():
         instances[key] = objects[key]
 
 def get_curr_seconds():
@@ -42,10 +42,13 @@ def get_success_json(frist_key,third_key,content):
 
 @app.route('/api/v1/getnewaddress/<string:name>')
 def getnewaddress(name,methods=['GET']):
+    if name not in instances:
+        datas.error_type['users_errors']['details'] = users_errors['1000']
+        return get_success_json('not_found','data',datas.error_type['users_errors'])
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except 
+    except:
         e = sys.exc_info()[0]
         print(e)
     finally:
@@ -121,5 +124,5 @@ def gateway_timeout(error):
     
 if __name__ == "__main__":
     init_coins()
-    app.run(host='0.0.0.0',port='8080')
+    app.run(host='0.0.0.0',port='8080',debug=False)
 

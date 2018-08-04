@@ -8,6 +8,11 @@ error_infos = {
     'internal_server_error':{'status':500,'message':'internal server error','data':''}
 }
 
+error_type = {'users_errors':{'type':'user_error','details':''},
+              'network_errors':{'type':'network_error','details':''}}
+
+users_errors = {'1000':'无此币，请对接存在的币'}
+
 rpc_infos = {
 	'btc':{'rpc_port':8332,'rpc_user':'apx','rpc_password':'DEOXMEIO943JKDJFIE3312DFKIEOK','method':'btc'},
 	'usdt':{'rpc_port':8338,'rpc_user':'usdt','rpc_password':'DJKQIEOOKDKLAKQOOEXMXMLLWOO','method':'btc'},
