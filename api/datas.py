@@ -13,7 +13,8 @@ status_code = {
 	'400': 400,
     '403': 403,
 	'405': 405,
-	'500': 500
+	'500': 500,
+	'504': 504
 }
 
 error_type = {'users_errors':{'interface_name':'','type':'user_error','details':''},

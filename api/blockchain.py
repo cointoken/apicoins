@@ -114,26 +114,28 @@ def listtransactions(name,address):
 
 @app.errorhandler(403)
 def forbidden(error):
-    return make_response(jsonify(datas.error_infos['forbidden']),403)
+    return make_response(jsonify(datas.error_infos['forbidden']),datas.status_code['403'])
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify(datas.error_infos['not_found']),404)
+    return make_response(jsonify(datas.error_infos['not_found']),datas.status_code['404'])
 
 
 @app.errorhandler(Exception)
 def internal_server_error(error):
-    if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
-        datas.error_type['network_errors']['details'] = datas.network_errors['2000']
-        return get_errors_json('internal_server_error',datas.error_type['network_errors'],datas.status_code['500'])
-    else:
-        return make_response(jsonify(datas.error_infos['internal_server_error']),500)
+    # if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
+    # datas.error_type['network_errors']['details'] = datas.network_errors['2000']
+    # return get_errors_json('internal_server_error',datas.error_type['network_errors'],datas.status_code['500'])
+    # # else:
+    # return make_response(jsonify(datas.error_infos['internal_server_error']),500)
+    datas.error_infos['internal_server_error']['data'] = repr(error)
+    return make_response(jsonify(datas.error_infos['internal_server_error']),datas.status_code['500'])
 
 
 @app.errorhandler(504)
 def gateway_timeout(error):
-    return make_response(jsonify(datas.error_infos['gateway_timeout']),504)
+    return make_response(jsonify(datas.error_infos['gateway_timeout']),datas.status_code['504'])
 
     
 if __name__ == "__main__":
