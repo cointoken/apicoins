@@ -40,12 +40,20 @@ def get_success_json(frist_key,third_key,content):
         print(e)
 
 
+def get_errors_json(frist_key,third_key,content):
+    datas.error_infos[frist_key]['data'][third_key] = content
+    try:
+        return jsonify(datas.error_infos[frist_key])
+    except(TypeError,ValueError) as e:
+        print(e)
+
+
 @app.route('/api/v1/getnewaddress/<string:name>')
 def getnewaddress(name,methods=['GET']):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['newaddress']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_success_json('not_found','data',datas.error_type['users_errors'])
+        return get_errors_json('not_found','data',datas.error_type['users_errors'])
 
     instances[name] = objects[name]
     address = instances[name].getnewaddress()
@@ -59,7 +67,7 @@ def validateaddress(name,address):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['valiaddress']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_success_json('not_found','data',datas.error_type['users_errors'])
+        return get_errors_json('not_found','data',datas.error_type['users_errors'])
 
     instances[name] = objects[name]
     validate = instances[name].validateaddress(address)
@@ -79,7 +87,7 @@ def listtransactions(name,address):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['transtatus']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_success_json('not_found','data',datas.error_type['users_errors'])
+        return get_errors_json('not_found','data',datas.error_type['users_errors'])
 
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
