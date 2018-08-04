@@ -6,34 +6,34 @@ from myjsonencoder import MyJSONEncoder
 import datas
 import time
 import sys
-import urllib3
-import requests
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
-instances = {'btc':None,
-            'ltc':None,
-            'usdt':None,
-            'bch':None,
-            'eth':None,
-            'etc':None}
+instances = {'btc': None,
+            'ltc': None,
+            'usdt': None,
+            'bch': None,
+            'eth': None,
+            'etc': None}
 
+objects =  {'btc': Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']['rpc_user'],datas.rpc_infos['btc']['rpc_password']),
+            'ltc': Btc(datas.rpc_infos['ltc']['rpc_port'],datas.rpc_infos['ltc']['rpc_user'],datas.rpc_infos['ltc']['rpc_password']),
+            'usdt': Btc(datas.rpc_infos['usdt']['rpc_port'],datas.rpc_infos['usdt']['rpc_user'],datas.rpc_infos['usdt']['rpc_password']),
+            'bch': Btc(datas.rpc_infos['bch']['rpc_port'],datas.rpc_infos['bch']['rpc_user'],datas.rpc_infos['bch']['rpc_password']),
+            'eth': Eth(datas.rpc_infos['eth']['rpc_port']),
+            'etc': Eth(datas.rpc_infos['etc']['rpc_port'])
+}
 
 def init_coins():
-    instances['btc'] = Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']['rpc_user'],datas.rpc_infos['btc']['rpc_password'])
-    instances['ltc'] = Btc(datas.rpc_infos['ltc']['rpc_port'],datas.rpc_infos['ltc']['rpc_user'],datas.rpc_infos['ltc']['rpc_password'])
-    instances['usdt'] = Btc(datas.rpc_infos['usdt']['rpc_port'],datas.rpc_infos['usdt']['rpc_user'],datas.rpc_infos['usdt']['rpc_password'])
-    instances['bch'] = Btc(datas.rpc_infos['bch']['rpc_port'],datas.rpc_infos['bch']['rpc_user'],datas.rpc_infos['bch']['rpc_password'])
-    instances['eth'] = Eth(datas.rpc_infos['eth']['rpc_port'])
-    instances['etc'] = Eth(datas.rpc_infos['etc']['rpc_port'])
-
+    for key,value in instances:
+        instances[key] = objects[key]
 
 def get_curr_seconds():
     return int(round(time.time()))
 
 
-def get_success_json(frist_key,thrid_key,content):
-    datas.success_infos[frist_key]['data'][thrid_key] = content
+def get_success_json(frist_key,third_key,content):
+    datas.success_infos[frist_key]['data'][third_key] = content
     try:
         return jsonify(datas.success_infos[frist_key])
     except(TypeError,ValueError) as e:
@@ -45,11 +45,11 @@ def getnewaddress(name,methods=['GET']):
     address = ''
     try:
         address = instances[name].getnewaddress()
-    except(requests.exceptions.ConnectionError,urllib3.exceptions.NewConnectionError) as e:
-       # print(e)
-        return
+    except 
+        e = sys.exc_info()[0]
+        print(e)
     finally:
-        init_coins()
+        instances[name] = objects[name]
         address = instances[name].getnewaddress()
     if name == 'bch':
         address = address[12:]  
@@ -65,7 +65,7 @@ def validateaddress(name,address):
         e = sys.exc_info()[0]
         print(e)
     finally:
-        init_coins()
+        instances[name] = objects[name]
         validate = instances[name].validateaddress(address)
     return get_success_json('validate_address','info',validate)
 
@@ -88,7 +88,7 @@ def listtransactions(name,address):
         except e:
             print(e.message)
         finally:
-            init_coins()
+            instances[name] = objects[name]
             result = instances[name].listtransactions('*',8000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
