@@ -62,7 +62,7 @@ def getnewaddress(name,methods=['GET']):
         instances[name] = objects[name]
         address = instances[name].getnewaddress()
     except:
-        return
+        pass
     if name == 'bch':
         address = address[12:]  
     return get_success_json('new_address','address',address)
@@ -80,7 +80,7 @@ def validateaddress(name,address):
         instances[name] = objects[name]
         validate = instances[name].validateaddress(address)
     except:
-        return
+        pass
 
     return get_success_json('validate_address','info',validate)
 
@@ -124,13 +124,13 @@ def not_found(error):
 
 @app.errorhandler(Exception)
 def internal_server_error(error):
-    # if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
-    # datas.error_type['network_errors']['details'] = datas.network_errors['2000']
-    # return get_errors_json('internal_server_error',datas.error_type['network_errors'],datas.status_code['500'])
-    # # else:
-    # return make_response(jsonify(datas.error_infos['internal_server_error']),500)
-    datas.error_infos['internal_server_error']['data'] = repr(error)
-    return make_response(jsonify(datas.error_infos['internal_server_error']),datas.status_code['500'])
+    if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
+        datas.error_type['network_errors']['details'] = datas.network_errors['2000']
+        return get_errors_json('internal_server_error',datas.error_type['network_errors'],datas.status_code['500'])
+    else:
+        return make_response(jsonify(datas.error_infos['internal_server_error']),500)
+    # datas.error_infos['internal_server_error']['data'] = repr(error)
+    # return make_response(jsonify(datas.error_infos['internal_server_error']),datas.status_code['500'])
 
 
 @app.errorhandler(504)
