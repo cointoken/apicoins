@@ -43,17 +43,12 @@ def get_success_json(frist_key,third_key,content):
 @app.route('/api/v1/getnewaddress/<string:name>')
 def getnewaddress(name,methods=['GET']):
     if name not in instances:
-        datas.error_type['users_errors']['details'] = users_errors['1000']
+        datas.error_type['users_errors']['interface_name'] = datas.interface_name['newaddress']
+        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
         return get_success_json('not_found','data',datas.error_type['users_errors'])
-    address = ''
-    try:
-        address = instances[name].getnewaddress()
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    finally:
-        instances[name] = objects[name]
-        address = instances[name].getnewaddress()
+
+    instances[name] = objects[name]
+    address = instances[name].getnewaddress()
     if name == 'bch':
         address = address[12:]  
     return get_success_json('new_address','address',address)
@@ -61,15 +56,13 @@ def getnewaddress(name,methods=['GET']):
 
 @app.route('/api/v1/validateaddress/<string:name>/<string:address>')
 def validateaddress(name,address):
-    validate = ''
-    try:
-        validate = instances[name].validateaddress(address)
-    except:
-        e = sys.exc_info()[0]
-        print(e)
-    finally:
-        instances[name] = objects[name]
-        validate = instances[name].validateaddress(address)
+    if name not in instances:
+        datas.error_type['users_errors']['interface_name'] = datas.interface_name['valiaddress']
+        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
+        return get_success_json('not_found','data',datas.error_type['users_errors'])
+
+    instances[name] = objects[name]
+    validate = instances[name].validateaddress(address)
     return get_success_json('validate_address','info',validate)
 
 
@@ -83,16 +76,15 @@ def sendtoaddress(name,address,amount):
 
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):
+    if name not in instances:
+        datas.error_type['users_errors']['interface_name'] = datas.interface_name['transtatus']
+        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
+        return get_success_json('not_found','data',datas.error_type['users_errors'])
+
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
-        result = ''
-        try:
-            result = instances[name].listtransactions('*',8000,0)
-        except e:
-            print(e.message)
-        finally:
-            instances[name] = objects[name]
-            result = instances[name].listtransactions('*',8000,0)
+        instances[name] = objects[name]
+        result = instances[name].listtransactions('*',8000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
                 trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
