@@ -61,9 +61,9 @@ def getnewaddress(name,methods=['GET']):
         instances[name] = objects[name]
         address = instances[name].getnewaddress()
     except Exception as e:
-        logger.error(e) 
-    finally:
         instances[name] = objects[name]
+        logger.error(e)
+
     address = instances[name].getnewaddress()
     if name == 'bch':
         address = address[12:]  
@@ -81,9 +81,9 @@ def validateaddress(name,address):
         instances[name] = objects[name]
         validate = instances[name].validateaddress(address)
     except Exception as e:
-        logger.error(e) 
-    finally:
         instances[name] = objects[name]
+        logger.error(e)
+
     validate = instances[name].validateaddress(address)
     if datas.rpc_infos[name]['method'] == 'btc':
         validate = {"valid_address": True} if validate['isvalid'] else {"valid_address": False}
@@ -111,9 +111,9 @@ def listtransactions(name,address):
             instances[name] = objects[name]
             result = instances[name].listtransactions('*',8000,0)
         except Exception as e:
-            logger.error(e) 
-        finally:
             instances[name] = objects[name]
+            logger.error(e)
+           
         result = instances[name].listtransactions('*',8000,0)
         for r in result:
             if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
