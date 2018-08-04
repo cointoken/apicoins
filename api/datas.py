@@ -22,8 +22,8 @@ error_type = {'users_errors':{'interface_name':'','type':'user_error','details':
 
 users_errors = {'1000':'无此币，请对接存在的币'}
 
-network_errors = {'2000':'区块服务器无法连接',
-                  '2001':'',
+network_errors = {'ConnectionError':'区块服务器无法连接',
+                  'JSONDecodeError':'无法获取区块数据或区块数据正在同步中',
                   '2002':''}
 
 interface_name = {

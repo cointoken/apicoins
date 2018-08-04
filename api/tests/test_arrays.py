@@ -73,4 +73,8 @@ if __name__=='__main__':
     # print(result)
     reobj = re.match('^0x[a-fA-F0-9]{40}','0xeweioiqox12333')
     result = {"valid_address": True} if reobj else {"valid_address": False}
-    print(result)
+
+    r = "\"JSONDecodeError('Expecting value: line 1 column 1 (char 0)',)\""
+    r = r[:r.find('(')]
+    r = r[r.find("\"")+1:]
+    print(r)
