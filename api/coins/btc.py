@@ -1,5 +1,6 @@
-from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-
+#from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
+from .rpc import Proxy
+from . import exc
 
 class Btc(object):
     def __init__(self,rpc_port,rpc_user,rpc_password):
@@ -7,7 +8,7 @@ class Btc(object):
         self.rpc_user = rpc_user
         self.rpc_password = rpc_password
         self.rpc_port = rpc_port
-        self.rpc_connection = AuthServiceProxy("http://%s:%s@%s:%s"%(self.rpc_user,self.rpc_password,self.rpc_ip,self.rpc_port))
+        self.rpc_connection = Proxy("http://%s:%s@%s:%s"%(self.rpc_user,self.rpc_password,self.rpc_ip,self.rpc_port))
 
 
     def getnewaddress(self):
