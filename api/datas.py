@@ -20,11 +20,10 @@ status_code = {
 error_type = {'users_errors':{'interface_name':'','type':'user_error','details':''},
               'network_errors':{'interface_name':'','type':'network_error','details':''}}
 
-users_errors = {'1000':'无此币，请对接存在的币'}
+users_errors = {'not_the_coin':'无此币，请对接存在的币'}
 
 network_errors = {'ConnectionError':'区块服务器无法连接',
-                  'JSONDecodeError':'无法获取区块数据或区块数据正在同步中',
-                  '2002':''}
+                  'JSONDecodeError':'无法获取区块数据或区块数据正在同步中'}
 
 interface_name = {
 	'newaddress':'getnewaddress',

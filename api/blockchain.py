@@ -5,13 +5,16 @@ from coins.eth import Eth
 from myjsonencoder import MyJSONEncoder
 import datas
 import time
-import sys
-import requests
-import urllib3
+import config
+import logging
+import logging.config
 
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
+logging.config.dictConfig(config.LOGGING_CONFIG)
+logger = logging.getLogger('root')
+
 instances = {'btc': None,
             'ltc': None,
             'usdt': None,
@@ -27,10 +30,6 @@ objects =  {'btc': Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']
             'etc': Eth(datas.rpc_infos['etc']['rpc_port'])
 }
 
-def init_coins():
-    for key,value in instances.items():
-        instances[key] = objects[key]
-
 def get_curr_seconds():
     return int(round(time.time()))
 
@@ -40,6 +39,7 @@ def get_success_json(frist_key,third_key,content):
     try:
         return jsonify(datas.success_infos[frist_key])
     except(TypeError,ValueError) as e:
+        logger.error(e)
         print(e)
 
 
@@ -48,6 +48,7 @@ def get_errors_json(frist_key,content,status_code):
     try:
         return make_response(jsonify(datas.error_infos[frist_key]),status_code)
     except(TypeError,ValueError) as e:
+        logger.error(e)
         print(e)
 
 
@@ -55,7 +56,7 @@ def get_errors_json(frist_key,content,status_code):
 def getnewaddress(name,methods=['GET']):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['newaddress']
-        datas.error_type['users_errors']['details'] = datas.users_errors['1000']
+        datas.error_type['users_errors']['details'] = datas.users_errors['not_the_coin']
         return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
 
     instances[name] = objects[name]
@@ -107,17 +108,20 @@ def listtransactions(name,address):
 
 @app.errorhandler(403)
 def forbidden(error):
+    logger.error(repr(error))
     return make_response(jsonify(datas.error_infos['forbidden']),datas.status_code['403'])
 
 
 @app.errorhandler(404)
 def not_found(error):
+    logger.error(repr(error))
     return make_response(jsonify(datas.error_infos['not_found']),datas.status_code['404'])
 
 
 @app.errorhandler(Exception)
 def internal_server_error(error):
     error = repr(error)
+    logger.error(error)
     error = error[:error.find('(')]
     if error.find("\"")>=0:
         error = error[error.find("\"")+1:]
@@ -128,10 +132,10 @@ def internal_server_error(error):
 
 @app.errorhandler(504)
 def gateway_timeout(error):
+    logger.error(repr(error))
     return make_response(jsonify(datas.error_infos['gateway_timeout']),datas.status_code['504'])
 
     
 if __name__ == "__main__":
-    init_coins()
     app.run(host='0.0.0.0',port='8080',debug=False)
 
