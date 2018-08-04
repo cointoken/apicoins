@@ -122,7 +122,7 @@ def not_found(error):
     return make_response(jsonify(datas.error_infos['not_found']),404)
 
 
-@app.errorhandler(500)
+@app.errorhandler(Exception)
 def internal_server_error(error):
     if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
         datas.error_type['network_errors']['details'] = datas.network_errors['2000']
