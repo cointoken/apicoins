@@ -13,7 +13,7 @@ import logging.config
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
 logging.config.dictConfig(config.LOGGING_CONFIG)
-logger = logging.getLogger('root')
+logger = logging.getLogger('default')
 
 instances = {'btc': None,
             'ltc': None,

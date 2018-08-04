@@ -1,21 +1,21 @@
 LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
-        'simple': {
+        'default': {
             'format': '%(lineno)s:  %(asctime)s - %(name)s - %(levelname)s - %(message)s',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'level': 'DEBUG',
-            'formatter': 'simple'
+            'level': 'ERROR',
+            'formatter': 'default'
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'logging.log',
-            'level': 'DEBUG',
-            'formatter': 'simple'
+            'filename': 'log/logging.log',
+            'level': 'ERROR',
+            'formatter': 'default'
         },
     },
     'loggers':{
@@ -24,7 +24,7 @@ LOGGING_CONFIG = {
             'level': 'DEBUG',
             # 'propagate': True,
         },
-        'simple': {
+        'default': {
             'handlers': ['console', 'file'],
             'level': 'WARN',
         }
