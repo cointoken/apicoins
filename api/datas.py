@@ -8,10 +8,22 @@ error_infos = {
     'internal_server_error':{'status':500,'message':'internal server error','data':''}
 }
 
+status_code = {
+	'404': 404,
+	'400': 400,
+    '403': 403,
+	'405': 405,
+	'500': 500
+}
+
 error_type = {'users_errors':{'interface_name':'','type':'user_error','details':''},
               'network_errors':{'interface_name':'','type':'network_error','details':''}}
 
 users_errors = {'1000':'无此币，请对接存在的币'}
+
+network_errors = {'2000':'区块服务器无法连接',
+                  '2001':'',
+                  '2002':''}
 
 interface_name = {
 	'newaddress':'getnewaddress',

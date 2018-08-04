@@ -6,6 +6,9 @@ from myjsonencoder import MyJSONEncoder
 import datas
 import time
 import sys
+import requests
+import urllib3
+
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
@@ -40,10 +43,10 @@ def get_success_json(frist_key,third_key,content):
         print(e)
 
 
-def get_errors_json(frist_key,content):
+def get_errors_json(frist_key,content,status_code):
     datas.error_infos[frist_key]['data'] = content
     try:
-        return jsonify(datas.error_infos[frist_key])
+        return make_response(jsonify(datas.error_infos[frist_key]),status_code)
     except(TypeError,ValueError) as e:
         print(e)
 
@@ -53,10 +56,13 @@ def getnewaddress(name,methods=['GET']):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['newaddress']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_errors_json('not_found',datas.error_type['users_errors'])
-
-    instances[name] = objects[name]
-    address = instances[name].getnewaddress()
+        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
+    address = ''
+    try:
+        instances[name] = objects[name]
+        address = instances[name].getnewaddress()
+    except:
+        return
     if name == 'bch':
         address = address[12:]  
     return get_success_json('new_address','address',address)
@@ -67,10 +73,15 @@ def validateaddress(name,address):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['valiaddress']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_errors_json('not_found',datas.error_type['users_errors'])
+        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
+     
+    validate = ''
+    try:
+        instances[name] = objects[name]
+        validate = instances[name].validateaddress(address)
+    except:
+        return
 
-    instances[name] = objects[name]
-    validate = instances[name].validateaddress(address)
     return get_success_json('validate_address','info',validate)
 
 
@@ -87,7 +98,7 @@ def listtransactions(name,address):
     if name not in instances:
         datas.error_type['users_errors']['interface_name'] = datas.interface_name['transtatus']
         datas.error_type['users_errors']['details'] = datas.users_errors['1000']
-        return get_errors_json('not_found',datas.error_type['users_errors'])
+        return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404'])
 
     trans = []
     if datas.rpc_infos[name]['method']=='btc':
@@ -113,8 +124,11 @@ def not_found(error):
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    #datas.error_infos['internal_server_error']['data'] = {'error':error.message}
-    return make_response(jsonify(datas.error_infos['internal_server_error']),500)
+    if error==urllib3.exceptions.NewConnectionError or error==requests.exceptions.ConnectionError:
+        datas.error_type['network_errors']['details'] = datas.network_errors['2000']
+        return get_errors_json('internal_server_error',datas.error_type['network_errors'],datas.status_code['500'])
+    else:
+        return make_response(jsonify(datas.error_infos['internal_server_error']),500)
 
 
 @app.errorhandler(504)
