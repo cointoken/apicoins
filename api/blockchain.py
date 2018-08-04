@@ -62,7 +62,7 @@ def getnewaddress(name,methods=['GET']):
         address = instances[name].getnewaddress()
     except Exception as e:
         instances[name] = objects[name]
-        logger.error(e)
+        logger.error('getnewaddress'+e)
 
     address = instances[name].getnewaddress()
     if name == 'bch':
@@ -82,7 +82,7 @@ def validateaddress(name,address):
         validate = instances[name].validateaddress(address)
     except Exception as e:
         instances[name] = objects[name]
-        logger.error(e)
+        logger.error('validateaddress'+e)
 
     validate = instances[name].validateaddress(address)
     if datas.rpc_infos[name]['method'] == 'btc':
@@ -135,10 +135,10 @@ def not_found(error):
     return make_response(jsonify(datas.error_infos['not_found']),datas.status_code['404'])
 
 
-@app.errorhandler(Exception)
+@app.errorhandler(500)
 def internal_server_error(error):
     error = repr(error)
-    logger.error(error)
+    logger.error('500'+error)
     error = error[:error.find('(')]
     if error.find("\"")>=0:
         error = error[error.find("\"")+1:]
