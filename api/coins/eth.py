@@ -8,11 +8,14 @@ class Eth(object):
         #self.rpc_ip = '127.0.0.1'
         #self.rpc_port = rpc_port
         #self.rpc_eth = Client(self.rpc_ip,self.rpc_port)
+        self.passphrase = 'tow ciep iqppem dkpoq qoeook kapqoe'
         self.w3 = Web3(HTTPProvider('http://127.0.0.1:{0}'.format(rpc_port), request_kwargs={'timeout': 60}))
 
     def getnewaddress(self):
+        private_key = self.w3.personal.newAccount(self.passphrase)
+        return self.w3.personal.importRawKey(private_key,self.passphrase)
     	#return self.rpc_eth.get_coinbase()
-        return self.w3.eth.coinbase
+        #return self.w3.coinbase
 
 
     def validateaddress(self,adddress):
