@@ -117,7 +117,8 @@ def listtransactions(name,address):
                 trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
     else:
-        pass
+        result = instances[name].getTransaction(address)
+        return get_success_json('transactions','info',result)
 
 
 @app.errorhandler(403)

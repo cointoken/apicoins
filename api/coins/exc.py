@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-  Reference:
-  https://github.com/bitcoin/bitcoin/blob/master/src/rpc/protocol.h#L32-L85
-"""
 ERROR_CODES = {
     # Standard JSON-RPC 2.0 errors
     -32600: 'RpcInvalidRequest',

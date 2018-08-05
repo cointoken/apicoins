@@ -2,7 +2,7 @@ LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
         'default': {
-            'format': '%(lineno)s:  %(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'format': '%(filename)s: %(funcName)s: %(lineno)s:  %(asctime)s - %(name)s - %(levelname)s - %(message)s',
         },
     },
     'handlers': {
