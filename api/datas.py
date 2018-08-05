@@ -24,7 +24,8 @@ users_errors = {'not_the_coin':'无此币，请对接存在的币'}
 
 network_errors = {'ConnectionError':'区块服务器无法连接',
                   'JSONDecodeError':'无法获取区块数据或区块数据正在同步中',
-				  'CannotSendRequest':'区块数据网络请求频繁，请稍后再试'}
+				  'CannotSendRequest':'区块数据网络请求频繁，请稍后再试',
+				  'ValueError':'区块网络暂时不可用'}
 
 interface_name = {
 	'newaddress':'getnewaddress',
