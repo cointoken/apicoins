@@ -130,7 +130,8 @@ def forbidden(error):
 @app.errorhandler(404)
 def not_found(error):
     logger.error(repr(error))
-    return make_response(jsonify(datas.error_infos['not_found']),datas.status_code['404'])
+    datas.error_type['users_errors']['details'] = datas.users_errors['not_the_interface']
+    return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404']) 
 
 
 @app.errorhandler(500)

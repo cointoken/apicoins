@@ -20,7 +20,8 @@ status_code = {
 error_type = {'users_errors':{'interface_name':'','type':'user_error','details':''},
               'network_errors':{'interface_name':'','type':'network_error','details':''}}
 
-users_errors = {'not_the_coin':'无此币，请对接存在的币'}
+users_errors = {'not_the_coin':'无此币，请对接存在的币',
+                 'not_the_interface':'暂无此接口，请检查接口正确性'}
 
 network_errors = {'ConnectionError':'区块服务器无法连接',
                   'JSONDecodeError':'无法获取区块数据或区块数据正在同步中',
