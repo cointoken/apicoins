@@ -13,7 +13,7 @@ LOGGING_CONFIG = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'log/logging.log',
+            'filename': 'log/errors.log',
             'level': 'ERROR',
             'formatter': 'default'
         },

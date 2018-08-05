@@ -63,7 +63,6 @@ def getnewaddress(name,methods=['GET']):
         return not_found_json('newaddress')
     try:
         instances[name] = objects[name]
-        address = instances[name].getnewaddress()
     except Exception as e:
         logger.error('getnewaddress:{}'.format(e))
         instances[name] = objects[name]
@@ -81,7 +80,6 @@ def validateaddress(name,address):
 
     try:
         instances[name] = objects[name]
-        validate = instances[name].validateaddress(address)
     except Exception as e:
         logger.error('validateaddress:{}'.format(e))
         instances[name] = objects[name]
@@ -109,7 +107,6 @@ def listtransactions(name,address):
     if datas.rpc_infos[name]['method']=='btc':
         try:
             instances[name] = objects[name]
-            result = instances[name].listtransactions('*',8000,0)
         except Exception as e:
             logger.error('gettranstatus:{}'.format(e))
             instances[name] = objects[name]
