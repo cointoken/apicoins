@@ -8,7 +8,7 @@ class Coins(Base):
     __tablename__ = 'coins'
     id = Column('id',Integer,primary_key = True)
     currency = Column('currency',String(20))
-    address = Column('address',String(255),unique = True)
+    address = Column('address',String(255))
     passphrase = Column('passphrase',String(255))
     created_at = Column('created_at',DateTime)
     def __init__(self,currency,address,passphrase,created_at):
@@ -16,7 +16,7 @@ class Coins(Base):
         self.address = address
         self.passphrase = passphrase
         self.created_at = created_at
-    
+
 
     def __repr_(self):
         return '<address %r>' % self.address
