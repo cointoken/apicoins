@@ -27,8 +27,8 @@ objects =  {'btc': Btc(datas.rpc_infos['btc']['rpc_port'],datas.rpc_infos['btc']
             'ltc': Btc(datas.rpc_infos['ltc']['rpc_port'],datas.rpc_infos['ltc']['rpc_user'],datas.rpc_infos['ltc']['rpc_password']),
             'usdt': Btc(datas.rpc_infos['usdt']['rpc_port'],datas.rpc_infos['usdt']['rpc_user'],datas.rpc_infos['usdt']['rpc_password']),
             'bch': Btc(datas.rpc_infos['bch']['rpc_port'],datas.rpc_infos['bch']['rpc_user'],datas.rpc_infos['bch']['rpc_password']),
-            'eth': Eth(datas.rpc_infos['eth']['rpc_port']),
-            'etc': Eth(datas.rpc_infos['etc']['rpc_port'])
+            'eth': Eth(datas.rpc_infos['eth']['rpc_port'],'eth'),
+            'etc': Eth(datas.rpc_infos['etc']['rpc_port'],'etc')
 }
 
 def get_curr_seconds():

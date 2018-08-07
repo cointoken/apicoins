@@ -7,9 +7,9 @@ Base = declarative_base()
 class Coins(Base):
     __tablename__ = 'coins'
     id = Column('id',Integer,primary_key = True)
-    currency = Column('currency',String(20),nullable = False)
-    address = Column('address',String(255),nullable = False,unique = True)
-    passphrase = Column('passphrase',String(255),nullable = False)
+    currency = Column('currency',String(20))
+    address = Column('address',String(255)，unique = True)
+    passphrase = Column('passphrase',String(255))
     created_at = Column('created_at',DateTime)
     def __init__(self,currency,address,passphrase,created_at):
         self.currency = currency
