@@ -8,7 +8,7 @@ class Coins(Base):
     __tablename__ = 'coins'
     id = Column('id',Integer,primary_key = True)
     currency = Column('currency',String(20),nullable = False)
-    address = Column('address',String(255),nullable = False)
+    address = Column('address',String(255),nullable = False,unique = True)
     passphrase = Column('passphrase',String(255),nullable = False)
     created_at = Column('created_at',DateTime)
     def __init__(self,currency,address,passphrase,created_at):
@@ -26,9 +26,9 @@ class Coins(Base):
         return '<currency %r>' % self.currency
 
 
-if __name__ == '__main__':
-    from sqlalchemy import create_engine
-    from ..config import SQLALCHEMY_DATABASE_URI 
-    engine = create_engine(SQLALCHEMY_DATABASE_URI)
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+# if __name__ == '__main__':
+#     from sqlalchemy import create_engine
+#     from ..config import SQLALCHEMY_DATABASE_URI 
+#     engine = create_engine(SQLALCHEMY_DATABASE_URI)
+#     Base.metadata.drop_all(engine)
+#     Base.metadata.create_all(engine)

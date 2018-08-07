@@ -1,9 +1,9 @@
-
 # -*- coding: utf-8 -*-
 from random import SystemRandom
 import sys
 
-words = ['abacus', 'abdomen', 'abdominal', 'abide', 'abiding', 'ability',
+class Passphrase():
+    words = ['abacus', 'abdomen', 'abdominal', 'abide', 'abiding', 'ability',
     'ablaze', 'able', 'abnormal', 'abrasion', 'abrasive', 'abreast', 'abridge',
     'abroad', 'abruptly', 'absence', 'absentee', 'absently', 'absinthe',
     'absolute', 'absolve', 'abstain', 'abstract', 'absurd', 'accent', 'acclaim',
@@ -1195,5 +1195,6 @@ words = ['abacus', 'abdomen', 'abdominal', 'abide', 'abiding', 'ability',
     'zoologist', 'zoology', 'zoom']
 
 
-def generate(word_count=7):
-    return ' '.join(SystemRandom().sample(words, word_count))
+    @classmethod
+    def generate(cls,word_count=7):
+        return ' '.join(SystemRandom().sample(cls.words, word_count))
