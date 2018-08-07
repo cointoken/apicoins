@@ -3,7 +3,7 @@ from web3 import Web3, HTTPProvider
 from sqlalchemy import create_engine
 from datetime import datetime
 import re
-from passphrase import Passphrase
+from .passphrase import Passphrase
 from dbs.crud import CRUD
 from dbs.models import Coins
 import config
@@ -13,7 +13,7 @@ class Eth(object):
         #self.rpc_ip = '127.0.0.1'
         #self.rpc_port = rpc_port
         #self.rpc_eth = Client(self.rpc_ip,self.rpc_port)
-        self.passphrase = 'tow ciep iqppem dkpoq qoeook kapqoe'
+        #self.passphrase = 'tow ciep iqppem dkpoq qoeook kapqoe'
         self.w3 = Web3(HTTPProvider('http://127.0.0.1:{0}'.format(rpc_port), request_kwargs={'timeout': 60}))
         self.name = name
 
@@ -29,7 +29,7 @@ class Eth(object):
         crud.update(passphrase,address)
         crud.close()
         return address
-        
+
         #return self.w3.personal.importRawKey(private_key,self.passphrase)
     	#return self.rpc_eth.get_coinbase()
         #return self.w3.coinbase
