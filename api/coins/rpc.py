@@ -63,6 +63,7 @@ class Proxy(object):
             return resp['result']
         return call
 
+
     @classmethod
     def prepare_connection(cls, conf, timeout=DEFAULT_HTTP_TIMEOUT):
         url = 'http://%s:%s' % (conf['rpchost'], conf['rpcport'])
