@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from datetime import datetime
-from db.models import Coins
+from models import Coins
 import config
 import api.coins.passphrase
 
