@@ -16,13 +16,13 @@ class Eth(object):
         #self.passphrase = 'tow ciep iqppem dkpoq qoeook kapqoe'
         self.w3 = Web3(HTTPProvider('http://127.0.0.1:{0}'.format(rpc_port), request_kwargs={'timeout': 60}))
         self.name = name
-
+        self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 
     def getnewaddress(self):
         passphrase = Passphrase.generate(8)
         coins = Coins(self.name,'',passphrase,datetime.now())
-        engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-        crud = CRUD(engine)
+        #engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+        crud = CRUD(self.engine)
         crud.insert(coins)
 
         address = self.w3.personal.newAccount(passphrase)
@@ -41,7 +41,12 @@ class Eth(object):
         return  {"valid_address":self.w3.isAddress(adddress)}
 
 
-    def sendTransaction(self,to,from_,value):
+    def sendTransaction(self,from_,to,value):
+        # crud = CRUD(self.engine)
+        # passphrase = crud.query_from_address(from_)
+        # if passphrase:
+        #      transaction = {from: from_, to: to, value: web3.toWei(value, "ether")}
+        #     self.w3.personal.sendTransaction(transaction, passphrase)
         return self.w3.eth.sendTransaction(to,from_,value)
        #return self.w3.eth.getBalance(address)
     
