@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
-from flask_scripte import Manager
+from flask_script import Manager
 from datetime import datetime
 from db.models import Coins
 import config
