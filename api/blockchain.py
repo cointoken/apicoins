@@ -97,7 +97,7 @@ def sendtoaddress(name,address,amount):
     #else：
     #    pass
 
-@app.route('api/v1/dumpprivkey/<string:name>/<string:address>')
+@app.route('/api/v1/dumpprivkey/<string:name>/<string:address>')
 def dumpprivkey(name,address):
     if name not in instances:
         return not_found_json('valiaddress')
