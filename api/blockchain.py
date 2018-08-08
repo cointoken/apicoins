@@ -97,6 +97,19 @@ def sendtoaddress(name,address,amount):
     #else：
     #    pass
 
+@app.route('api/v1/dumpprivkey/<string:name>/<string:address>')
+def dumpprivkey(name,address):
+    if name not in instances:
+        return not_found_json('valiaddress')
+
+    try:
+        instances[name] = objects[name]
+    except Exception as e:
+        logger.error('validateaddress:{}'.format(e))
+        instances[name] = objects[name]
+    key = instances[name].dumpprivkey(address)
+    return get_success_json('dumpprivkey','info',key)
+
 
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
 def listtransactions(name,address):

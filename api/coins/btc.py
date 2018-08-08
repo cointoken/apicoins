@@ -33,3 +33,10 @@ class Btc(object):
 
     def sendfrom(self,fromaccount,tobitcoinaddress,amount):
     	return self.rpc_connection.sendfrom(fromaccount,tobitcoinaddress,amount)
+    
+    
+    '''
+    从比特币地址生成私钥
+    '''
+    def dumpprivkey(self,address):
+        return self.dumpprivkey(address)

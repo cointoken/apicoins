@@ -23,7 +23,7 @@ class CRUD():
 
 
     def update(self,passphrase_,address):
-        if passphrase_:
+        if passphrase_ and address:
             coins = self.session.query(Coins).filter_by(passphrase=passphrase_).first()
             coins.address = address
             self.session.commit()

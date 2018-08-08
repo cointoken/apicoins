@@ -49,4 +49,5 @@ success_infos = {
 	'account':{'status': 200,'message': 'success','data': { 'info': '' }},
 	'transactions':{'status': 200,'message': 'success','data': { 'info': '' }},
 	'sendtoaddress':{'status': 200,'message': 'success','data': { 'info': '' }},
+	'dumpprivkey':{'status': 200,'message': 'success','data': { 'info': '' }},	
 }
