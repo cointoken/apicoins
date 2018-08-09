@@ -39,4 +39,4 @@ class Btc(object):
     从比特币地址生成私钥
     '''
     def dumpprivkey(self,address):
-        return self.dumpprivkey(address)
+        return self.rpc_connection.dumpprivkey(address)
