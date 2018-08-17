@@ -62,5 +62,11 @@ class Btc(object):
         ol = self.rpc_connection.omni_listtransactions()
         print(ol[0]['referenceaddress'])
 
+
+
+if __name__ == '__main__':
+    btc = Btc('usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO',8338)
+    btc.usdt_get_trans()
+
     
 
