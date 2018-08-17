@@ -2,6 +2,10 @@ import json
 import requests
 import collections
 
+
+data = "{\"status\":200,\"message\":\"success\", \"data\":{\"deposits\":[{\"fund_uid\":\"\",\"amount\":10000,\"currency\":\"btc\"},{\"fund_uid\":\"\",\"amount\":8888,\"currency\":\"ltc\"}] }}"
+
+
 def test_getdata():
     url = 'http://47.75.91.163:8080/api/v1/getnewaddress/ltc'
     r = requests.get(url)
@@ -18,7 +22,15 @@ def test_getdata():
     for key,value in dic.items():
         print(dic[key])   
     
-
+def test_data():
+    j = json.loads(data)
+    if isinstance(j,str):
+        print('str')
+    elif isinstance(j,dict):
+        print('dict')
+    arrs = j['data']['deposits']
+    for a in arrs:
+        print(a['currency'])
 
 if __name__ == '__main__':
-    test_getdata()
+    test_data()
