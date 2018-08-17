@@ -44,8 +44,9 @@ class Btc(object):
         return self.rpc_connection.dumpprivkey(address)
 
 
+    
     @staticmethod
-    def get_usdt_deposit(address):
+    def usdt_get_deposit(address):
         deposit_url = 'https://api.omniexplorer.info/v1/transaction/address'
         post_data = {
             'addr': address,
@@ -55,5 +56,11 @@ class Btc(object):
         j = json.loads(r.content)
         ts = j['transactions']
         return {'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
+
+     
+    def usdt_get_trans(self):
+        ol = self.rpc_connection.omni_listtransactions()
+        print(ol[0]['referenceaddress'])
+
     
 
