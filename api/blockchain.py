@@ -89,11 +89,6 @@ def validateaddress(name,address):
         validate = {"valid_address": True} if validate['isvalid'] else {"valid_address": False}
     return get_success_json('validate_address','info',validate)
 
-
-@app.route('/api/v1/test')
-def test():
-    instances['usdt'] = objects['usdt']
-    return instances['usdt'].usdt_get_trans()
 # @app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
 # def sendtoaddress(name,address,amount):
 #     if  datas.rpc_infos[name]['method']=='btc':
@@ -128,7 +123,8 @@ def listtransactions(name,address):
             logger.error('gettranstatus:{}'.format(e))
             instances[name] = objects[name]
         if name=='usdt':
-            trans =  Btc.get_usdt_deposit(address)
+            #trans =  Btc.usdt_get_deposit(address)
+            trans = address.usdt_get_trans(address)
         else:
             result = instances[name].listtransactions('*',8000,0)
             for r in result:

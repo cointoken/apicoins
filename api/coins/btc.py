@@ -58,9 +58,12 @@ class Btc(object):
         return {'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
 
      
-    def usdt_get_trans(self):
-        ol = self.rpc_connection.omni_listtransactions()
-        print(ol[0]['referenceaddress'])
+    def usdt_get_trans(self,address):
+        ts = self.rpc_connection.omni_listtransactions()
+        for t in ts:
+            if t['referenceaddress'] == address:
+                return {'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
+                
 
 
     
