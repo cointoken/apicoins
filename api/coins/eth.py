@@ -23,10 +23,10 @@ class Eth(object):
         coins = Coins(self.name,'',passphrase,datetime.now())
         #engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
         crud = CRUD(self.engine)
-        crud.insert(coins)
+        crud.coins_insert(coins)
 
         address = self.w3.personal.newAccount(passphrase)
-        crud.update(passphrase,address)
+        crud.coins_update(passphrase,address)
         crud.close()
         return address
 
@@ -42,13 +42,14 @@ class Eth(object):
 
 
     def sendTransaction(self,from_,to,value):
-        # crud = CRUD(self.engine)
-        # passphrase = crud.query_from_address(from_)
-        # if passphrase:
-        #      transaction = {from: from_, to: to, value: web3.toWei(value, "ether")}
-        #     self.w3.personal.sendTransaction(transaction, passphrase)
-        return self.w3.eth.sendTransaction(to,from_,value)
-       #return self.w3.eth.getBalance(address)
+        crud = CRUD(self.engine)
+        passphrase = crud.query_from_address(from_)
+        if passphrase:
+            transaction = {from: from_, to: to, value: web3.toWei(value, "ether")}
+            self.w3.personal.sendTransaction(transaction, passphrase)
+        #return self.w3.eth.sendTransaction(to,from_,value)
+        #return self.w3.eth.getBalance(address)
+    
     
     def getTransaction(self,transaction_hash):
         return self.w3.eth.getTransaction(transaction_hash)

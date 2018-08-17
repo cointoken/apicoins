@@ -68,8 +68,8 @@ def getnewaddress(name,methods=['GET']):
         instances[name] = objects[name]
 
     address = instances[name].getnewaddress()
-    if name == 'bch':
-        address = address[12:]  
+    #if name == 'bch':
+    #   address = address[12:]  
     return get_success_json('new_address','address',address)
 
 
@@ -90,25 +90,25 @@ def validateaddress(name,address):
     return get_success_json('validate_address','info',validate)
 
 
-@app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
-def sendtoaddress(name,address,amount):
-    if  datas.rpc_infos[name]['method']=='btc':
-        return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
-    #else：
-    #    pass
+# @app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
+# def sendtoaddress(name,address,amount):
+#     if  datas.rpc_infos[name]['method']=='btc':
+#         return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
+#     #else：
+#     #    pass
 
-@app.route('/api/v1/dumpprivkey/<string:name>/<string:address>')
-def dumpprivkey(name,address):
-    if name not in instances:
-        return not_found_json('valiaddress')
+# @app.route('/api/v1/dumpprivkey/<string:name>/<string:address>')
+# def dumpprivkey(name,address):
+#     if name not in instances:
+#         return not_found_json('valiaddress')
 
-    try:
-        instances[name] = objects[name]
-    except Exception as e:
-        logger.error('validateaddress:{}'.format(e))
-        instances[name] = objects[name]
-    key = instances[name].dumpprivkey(address)
-    return get_success_json('dumpprivkey','info',key)
+#     try:
+#         instances[name] = objects[name]
+#     except Exception as e:
+#         logger.error('validateaddress:{}'.format(e))
+#         instances[name] = objects[name]
+#     key = instances[name].dumpprivkey(address)
+#     return get_success_json('dumpprivkey','info',key)
 
 
 @app.route('/api/v1/gettranstatus/<string:name>/<string:address>')
@@ -123,11 +123,13 @@ def listtransactions(name,address):
         except Exception as e:
             logger.error('gettranstatus:{}'.format(e))
             instances[name] = objects[name]
-
-        result = instances[name].listtransactions('*',8000,0)
-        for r in result:
-            if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
+        if name=='usdt':
+            trans =  Btc.get_usdt_deposit(address)
+        else:
+            result = instances[name].listtransactions('*',8000,0)
+            for r in result:
+                if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
+                    trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
     else:
         result = instances[name].getTransaction(address)
@@ -143,6 +145,7 @@ def forbidden(error):
 @app.errorhandler(404)
 def not_found(error):
     logger.error(repr(error))
+    datas.error_type['users_errors']['interface_name'] = ''
     datas.error_type['users_errors']['details'] = datas.users_errors['not_the_interface']
     return get_errors_json('not_found',datas.error_type['users_errors'],datas.status_code['404']) 
 

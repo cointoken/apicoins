@@ -1,6 +1,8 @@
 #from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from .rpc import Proxy
 from . import exc
+import requests
+import json
 
 class Btc(object):
     def __init__(self,rpc_port,rpc_user,rpc_password):
@@ -40,3 +42,18 @@ class Btc(object):
     '''
     def dumpprivkey(self,address):
         return self.rpc_connection.dumpprivkey(address)
+
+
+    @staticmethod
+    def get_usdt_deposit(address):
+        deposit_url = 'https://api.omniexplorer.info/v1/transaction/address'
+        post_data = {
+            'addr': address,
+            'page': 0
+        }
+        r = requests.post(deposit_url,data=post_data)
+        j = json.loads(r.content)
+        ts = j['transactions']
+        return {'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
+    
+

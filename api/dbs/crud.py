@@ -1,4 +1,5 @@
 from .models import Coins
+from .models import Deposits
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from datetime import datetime
@@ -10,25 +11,44 @@ class CRUD():
         self.session = sessionmaker(bind=engine)()
 
 
-    def insert(self,coins):
+    def coins_insert(self,coins):
         if isinstance(coins,Coins):
             self.session.add(coins)
             self.session.commit()
 
 
-    def query_from_address(self,address_):
+    def coins_query_from_address(self,address_):
         if address_:
             passphrase = self.session.query(Coins.passphrase).filter_by(address=address_).first()
             return passphrase
 
 
-    def update(self,passphrase_,address):
+    def coins_update(self,passphrase_,address):
         if passphrase_ and address:
             coins = self.session.query(Coins).filter_by(passphrase=passphrase_).first()
             coins.address = address
             self.session.commit()
 
-    
+
+    def deposits_insert(self,deposits):
+        if isinstance(deposits,Deposits):
+            self.session.add(deposits)
+            self.session.commit()
+
+
+    def deposits_update(self,address,txid):
+        if address:
+            deposits = self.session.query(Deposits).filter_by(address=address).first()
+            deposits.txid = txid
+            self.session.commit()
+
+
+    def deposits_query_from_address(self,address):
+        if address:
+            txid = self.session.query(Deposits.txid).filter_by(address=address).first()
+            return txid    
+
+
     def close(self):
         self.session.close()
 
