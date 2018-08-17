@@ -90,6 +90,10 @@ def validateaddress(name,address):
     return get_success_json('validate_address','info',validate)
 
 
+@app.route('/api/v1/test')
+def test():
+    instances['usdt'] = objects['usdt']
+    return instances['usdt'].usdt_get_trans()
 # @app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
 # def sendtoaddress(name,address,amount):
 #     if  datas.rpc_infos[name]['method']=='btc':

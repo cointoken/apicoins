@@ -63,10 +63,5 @@ class Btc(object):
         print(ol[0]['referenceaddress'])
 
 
-
-if __name__ == '__main__':
-    btc = Btc('usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO',8338)
-    btc.usdt_get_trans()
-
     
 
