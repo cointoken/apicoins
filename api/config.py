@@ -30,5 +30,3 @@ LOGGING_CONFIG = {
         }
     }
 }
-
-git
