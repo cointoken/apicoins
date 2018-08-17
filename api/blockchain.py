@@ -124,7 +124,7 @@ def listtransactions(name,address):
             instances[name] = objects[name]
         if name=='usdt':
             #trans =  Btc.usdt_get_deposit(address)
-            trans = address.usdt_get_trans(address)
+            trans = instances[name] .usdt_get_trans(address)
         else:
             result = instances[name].listtransactions('*',8000,0)
             for r in result:
