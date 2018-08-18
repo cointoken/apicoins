@@ -146,7 +146,7 @@ def listtransactions(name,address):
         if trans =='transactions_api_key_error' or trans =='transactions_error':
             return get_code_error(trans)
         else:
-        return get_success_json('transactions','info',trans)
+            return get_success_json('transactions','info',trans)
 
 
 @app.errorhandler(403)
