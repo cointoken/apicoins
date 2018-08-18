@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 #from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from .rpc import Proxy
 from . import exc
@@ -55,16 +56,30 @@ class Btc(object):
         r = requests.post(deposit_url,data=post_data)
         j = json.loads(r.content)
         ts = j['transactions']
-        return {'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
+        return {'address':address,'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
 
      
     def usdt_get_trans(self,address):
         ts = self.rpc_connection.omni_listtransactions()
         for t in ts:
             if t['referenceaddress'] == address:
-                return {'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
-                
+                return {'address':address,'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
+        return ''
 
+
+    @staticmethod
+    def ltc_get_address(address):
+        if address:
+            ltc_url =  'https://chain.so/api/v2/address/LTC/{0}'.format(address)
+            r = requests.get(ltc_url)
+            if r.content:
+                j =  json.loads(r.content)
+                return j['data']['address']
+        return ''
+
+
+# if __name__=='__main__':
+#     print(Btc.ltc_get_address('MJFUvSKPqC8FuEQixFsWNzB5Rs6a9GKjyJ'))
 
     
 

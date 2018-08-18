@@ -68,6 +68,8 @@ def getnewaddress(name,methods=['GET']):
         instances[name] = objects[name]
 
     address = instances[name].getnewaddress()
+    if name == 'ltc':
+        address = Btc.ltc_get_address(address)
     #if name == 'bch':
     #   address = address[12:]  
     return get_success_json('new_address','address',address)
@@ -116,20 +118,21 @@ def listtransactions(name,address):
         return not_found_json('transtatus')
 
     trans = []
+    try:
+        instances[name] = objects[name]
+    except Exception as e:
+        logger.error('gettranstatus:{}'.format(e))
+        instances[name] = objects[name]
     if datas.rpc_infos[name]['method']=='btc':
-        try:
-            instances[name] = objects[name]
-        except Exception as e:
-            logger.error('gettranstatus:{}'.format(e))
-            instances[name] = objects[name]
         if name=='usdt':
-            #trans =  Btc.usdt_get_deposit(address)
             trans = instances[name] .usdt_get_trans(address)
+            if not trans:
+                trans =  Btc.usdt_get_deposit(address)
         else:
             result = instances[name].listtransactions('*',8000,0)
             for r in result:
                 if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                    trans.append({'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
+                    trans.append({'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
     else:
         result = instances[name].getTransaction(address)

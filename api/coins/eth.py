@@ -7,6 +7,8 @@ from .passphrase import Passphrase
 from dbs.crud import CRUD
 from dbs.models import Coins
 import config
+import requests
+import json
 
 class Eth(object):
     def __init__(self,rpc_port,name):
@@ -50,6 +52,19 @@ class Eth(object):
         #return self.w3.eth.sendTransaction(to,from_,value)
         #return self.w3.eth.getBalance(address)
     
+
+    @staticmethod
+    def getTransaction(self,address):
+        #return self.w3.eth.getTransaction(transaction_hash)
+        if address:
+            eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
+            data = {'apiKey':'freekey'}
+            r = requests.get(eth_url,data=data)
+            rc = r.content
+            if rc:
+                js = json.loads(rc)
+                category = 'receive' if js[0]['to']==address else 'send'
+                return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
+        return ''
+
     
-    def getTransaction(self,transaction_hash):
-        return self.w3.eth.getTransaction(transaction_hash)
