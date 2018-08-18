@@ -66,8 +66,8 @@ class Eth(object):
                 try:
                     category = 'send' if js[0]['to']==address else 'receive'
                 except:
-                    return 'address_api_key_error'
-            return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
-        return 'address_get_error'
+                    return 'transactions_api_key_error'
+                return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
+        return 'transactions_error'
 
     
