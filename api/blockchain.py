@@ -135,7 +135,7 @@ def listtransactions(name,address):
                     trans.append({'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
         return get_success_json('transactions','info',trans)
     else:
-        result = instances[name].getTransaction(address)
+        result = Eth.getTransaction(address)
         return get_success_json('transactions','info',result)
 
 

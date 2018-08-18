@@ -54,7 +54,7 @@ class Eth(object):
     
 
     @staticmethod
-    def getTransaction(self,address):
+    def getTransaction(address):
         #return self.w3.eth.getTransaction(transaction_hash)
         if address:
             eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
