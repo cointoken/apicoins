@@ -32,5 +32,21 @@ def test_data():
     for a in arrs:
         print(a['currency'])
 
+def test_str():
+    s ={'category':'sdoio'}
+    if not s:
+        print('no')
+    else:
+        print('yes')
+
+def ltc_get_address(address):
+    if address:
+        ltc_url =  'https://chain.so/api/v2/address/LTC/{0}'.format(address)
+        r = requests.get(ltc_url)
+        if r.content:
+            j =  json.loads(r.content)
+            return j['data']['address']
+    return ''
+
 if __name__ == '__main__':
-    test_data()
+    print(ltc_get_address('MJFUvSKPqC8FuEQixFsWNzB5Rs6a9GKjyJ'))
