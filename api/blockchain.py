@@ -51,6 +51,10 @@ def get_errors_json(frist_key,content,status_code):
         logger.error(e)
 
 
+def get_code_error(key):
+    return jsonify(datas.error_infos[key])
+
+
 def not_found_json(name):
     datas.error_type['users_errors']['interface_name'] = datas.interface_name[name]
     datas.error_type['users_errors']['details'] = datas.users_errors['not_the_coin']
@@ -117,7 +121,7 @@ def listtransactions(name,address):
     if name not in instances:
         return not_found_json('transtatus')
 
-    trans = []
+    trans = ''
     try:
         instances[name] = objects[name]
     except Exception as e:
@@ -125,18 +129,24 @@ def listtransactions(name,address):
         instances[name] = objects[name]
     if datas.rpc_infos[name]['method']=='btc':
         if name=='usdt':
-            trans = instances[name] .usdt_get_trans(address)
+            trans = instances[name].usdt_get_trans(address)
             if not trans:
                 trans =  Btc.usdt_get_deposit(address)
         else:
             result = instances[name].listtransactions('*',8000,0)
             for r in result:
                 if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                    trans.append({'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']})
-        return get_success_json('transactions','info',trans)
+                   trans ={'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']}
+        if trans =='transactions_api_key_error' or trans =='transactions_error':
+            return get_code_error(trans)
+        else:
+            return get_success_json('transactions','info',trans)
     else:
-        result = Eth.getTransaction(address)
-        return get_success_json('transactions','info',result)
+        trans = Eth.getTransaction(address)
+        if trans =='transactions_api_key_error' or trans =='transactions_error':
+            return get_code_error(trans)
+        else:
+        return get_success_json('transactions','info',trans)
 
 
 @app.errorhandler(403)

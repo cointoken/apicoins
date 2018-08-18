@@ -5,7 +5,9 @@ error_infos = {
     'not_found':{'status':404,'message':'not found','data':''},
     'forbidden':{'status':403,'message':'forbidden','data':''},
     'gateway_timeout':{'status':504,'message':'gateway timeout','data':''},
-    'internal_server_error':{'status':500,'message':'internal server error','data':''}
+    'internal_server_error':{'status':500,'message':'internal server error','data':''},
+	'transactions_api_key_error':{'code':11,'message':'Invalid API key'},
+	'transactions_error':{'code':10,'message':'transactions error or invaild address'}
 }
 
 status_code = {

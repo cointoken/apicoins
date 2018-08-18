@@ -58,13 +58,16 @@ class Eth(object):
         #return self.w3.eth.getTransaction(transaction_hash)
         if address:
             eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
-            data = {'apiKey':'freekey'}
-            r = requests.get(eth_url,data=data)
+            params = {'apiKey':'freekey11'}
+            r = requests.get(eth_url,params=params)
             rc = r.content
-            if rc:
+            if rc :
                 js = json.loads(rc)
-                category = 'receive' if js[0]['to']==address else 'send'
-                return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
-        return ''
+                try:
+                    category = 'send' if js[0]['to']==address else 'receive'
+                except:
+                    return 'address_api_key_error'
+            return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
+        return 'address_get_error'
 
     

@@ -53,18 +53,26 @@ class Btc(object):
             'addr': address,
             'page': 0
         }
-        r = requests.post(deposit_url,data=post_data)
-        j = json.loads(r.content)
-        ts = j['transactions']
-        return {'address':address,'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
+        if address:
+            r = requests.post(deposit_url,data=post_data)
+            j = json.loads(r.content)
+            try:
+                ts = j['transactions']
+                return {'address':address,'category':ts[0]['type'],'time':ts[0]['blocktime'],'txid':ts[0]['txid'],'amount':ts[0]['amount']}
+            except:
+                return 'transactions_error'
+        return 'transactions_error'
 
      
     def usdt_get_trans(self,address):
         ts = self.rpc_connection.omni_listtransactions()
         for t in ts:
-            if t['referenceaddress'] == address:
-                return {'address':address,'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
-        return ''
+            try:
+                if t['referenceaddress'] == address:
+                    return {'address':address,'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
+            except:
+                return 'transactions_error'
+        return 'transactions_error'
 
 
     @staticmethod
@@ -74,8 +82,11 @@ class Btc(object):
             r = requests.get(ltc_url)
             if r.content:
                 j =  json.loads(r.content)
-                return j['data']['address']
-        return ''
+                try:
+                    return j['data']['address']
+                except:
+                    return 'transactions_error'
+        return 'transactions_error'
 
 
 # if __name__=='__main__':

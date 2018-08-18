@@ -48,5 +48,32 @@ def ltc_get_address(address):
             return j['data']['address']
     return ''
 
+def testdict(key):
+    dic = ''
+    dic={'1':1222,'2':1444}
+    if dic[key]:
+        print(dic[key])
+    else:
+        print('error')
+
+def getTransaction(address):
+        #return self.w3.eth.getTransaction(transaction_hash)
+    if address:
+        eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
+        params = {'apiKey':'freekey11'}
+        r = requests.get(eth_url,params=params)
+        rc = r.content
+        if rc :
+            js = json.loads(rc)
+            try:
+                category = 'send' if js[0]['to']==address else 'receive'
+            except:
+                return rc
+        return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
+    return {"error":{"code":100,"message":'Invalid address'}}
+
+
 if __name__ == '__main__':
-    print(ltc_get_address('MJFUvSKPqC8FuEQixFsWNzB5Rs6a9GKjyJ'))
+    #print(getTransaction(''))
+    testdict('1')
+    #testdict("{'234':123}")
