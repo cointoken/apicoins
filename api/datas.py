@@ -6,8 +6,8 @@ error_infos = {
     'forbidden':{'status':403,'message':'forbidden','data':''},
     'gateway_timeout':{'status':504,'message':'gateway timeout','data':''},
     'internal_server_error':{'status':500,'message':'internal server error','data':''},
-	'transactions_api_key_error':{'error':{'code':11,'message':'Invalid API key'}},
-	'transactions_error':{'error':{'code':10,'message':'transactions error or invaild address'}}
+	'transactions_api_key_error':{'status': 200,'message': 'success','data': {'error':{'code':11,'message':'Invalid API key'}}},
+	'transactions_error':{'status': 200,'message': 'success','data': {'error':{'code':10,'message':'transactions error or invaild address'}}}
 }
 
 status_code = {

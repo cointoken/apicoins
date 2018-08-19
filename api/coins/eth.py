@@ -20,6 +20,7 @@ class Eth(object):
         self.name = name
         self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 
+
     def getnewaddress(self):
         passphrase = Passphrase.generate(8)
         coins = Coins(self.name,'',passphrase,datetime.now())
@@ -54,7 +55,7 @@ class Eth(object):
     
 
     @staticmethod
-    def getTransaction(address):
+    def eth_get_transaction(address):
         #return self.w3.eth.getTransaction(transaction_hash)
         if address:
             eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
@@ -71,3 +72,20 @@ class Eth(object):
         return 'transactions_error'
 
     
+    @staticmethod
+    def etc_get_transaction(address):
+        if address:
+            etc_url = 'https://api.gastracker.io/v1/addr/{0}/operations'.format(address)
+            r = requests.get(etc_url)
+            js = json.loads(r.content)
+            if js:
+                item = ''
+                try:
+                    item = js['items'][0]
+                    category = 'send' if item['to']==address else 'receive'
+                except:
+                    return 'transactions_error'
+            return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':item['value']['ether']}
+        return 'transactions_error'
+            
+            

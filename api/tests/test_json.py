@@ -51,10 +51,12 @@ def ltc_get_address(address):
 def testdict(key):
     dic = ''
     dic={'1':1222,'2':1444}
+    
     if dic[key]:
         print(dic[key])
     else:
         print('error')
+
 
 def getTransaction(address):
         #return self.w3.eth.getTransaction(transaction_hash)
@@ -73,7 +75,22 @@ def getTransaction(address):
     return {"error":{"code":100,"message":'Invalid address'}}
 
 
+def etc_get_transaction(address):
+    if address:
+        etc_url = 'https://api.gastracker.io/v1/addr/{0}/operations'.format(address)
+        r = requests.get(etc_url)
+        js = json.loads(r.content)
+        if js:
+            item = ''
+            try:
+                item = js['items'][0]
+                category = 'send' if item['to']==address else 'receive'
+            except:
+                return 'transactions_api_key_error'
+            return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':item['value']['ether']}
+            
+
 if __name__ == '__main__':
     #print(getTransaction(''))
-    testdict('1')
+    print(etc_get_transaction('0xCd6b6de6e4C471368108b895C899F7Bd0e48f305'))
     #testdict("{'234':123}")

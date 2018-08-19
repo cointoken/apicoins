@@ -133,18 +133,22 @@ def listtransactions(name,address):
             if not trans:
                 trans =  Btc.usdt_get_deposit(address)
         else:
-            result = instances[name].listtransactions('*',8000,0)
+            result = instances[name].listtransactions('*',10000,0)
             if name =='ltc':
+                src_address = address 
                 address = instances[name].ltc_get_tranaddress(address)
             for r in result:
                 if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                   trans ={'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']}
+                   trans ={'address':src_address if name=='ltc' else address ,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']}
         if trans =='transactions_api_key_error' or trans =='transactions_error':
             return get_code_error(trans)
         else:
             return get_success_json('transactions','info',trans)
     else:
-        trans = Eth.getTransaction(address)
+        if name =='eth':
+            trans = Eth.eth_get_transaction(address)
+        elif name == 'etc':
+            trans = Eth.etc_get_transaction(address)
         if trans =='transactions_api_key_error' or trans =='transactions_error':
             return get_code_error(trans)
         else:

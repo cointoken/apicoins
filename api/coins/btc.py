@@ -78,7 +78,12 @@ class Btc(object):
     def ltc_get_tranaddress(self,address):
         j = self.rpc_connection.validateaddress(address)
         if j:
-            return j['address']
+            try:
+                return j['address']
+            except:
+                return 'transactions_error'
+        return 'transactions_error'             
+    
     
     @staticmethod
     def ltc_get_address(address):
