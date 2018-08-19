@@ -134,6 +134,8 @@ def listtransactions(name,address):
                 trans =  Btc.usdt_get_deposit(address)
         else:
             result = instances[name].listtransactions('*',8000,0)
+            if name =='ltc':
+                address = instances[name].ltc_get_tranaddress(address)
             for r in result:
                 if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
                    trans ={'address':address,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']}
