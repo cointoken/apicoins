@@ -77,7 +77,7 @@ class Btc(object):
         for t in ts:
             try:
                 if t['referenceaddress'] == address:
-                    return {'address':address,'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':t['amount']}
+                    return {'address':address,'category':t['type'],'time':t['blocktime'],'txid':t['txid'],'amount':str(t['amount'])}
             except:
                 return 'transactions_error'
         return 'transactions_error'

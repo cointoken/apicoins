@@ -145,7 +145,7 @@ def listtransactions(name,address):
                 address = instances[name].ltc_get_tranaddress(address)
             for r in result:
                 if r['address'] == address: #and (get_curr_seconds()-r['time'])<1200:
-                   trans ={'address':src_address if name=='ltc' else address ,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':r['amount']}
+                   trans ={'address':src_address if name=='ltc' else address ,'category':r['category'],'time':r['time'],'txid':r['txid'],'amount':str(r['amount'])}
         if trans =='transactions_api_key_error' or trans =='transactions_error':
             return get_code_error(trans)
         else:

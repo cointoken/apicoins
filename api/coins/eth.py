@@ -68,7 +68,7 @@ class Eth(object):
                     category = 'send' if js[0]['to']==address else 'receive'
                 except:
                     return 'transactions_api_key_error'
-                return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':js[0]['value']}
+                return {'address':address,'category':category,'time':js[0]['timestamp'],'txid':js[0]['hash'],'amount':str(js[0]['value'])}
         return 'transactions_error'
 
     
@@ -85,7 +85,7 @@ class Eth(object):
                     category = 'send' if item['to']==address else 'receive'
                 except:
                     return 'transactions_error'
-            return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':item['value']['ether']}
+            return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':str(item['value']['ether'])}
         return 'transactions_error'
             
             
