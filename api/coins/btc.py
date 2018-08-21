@@ -84,14 +84,15 @@ class Btc(object):
 
 
     def usdt_send_from(self,from_,to,amount):
-        if from_ and to:
-            balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
-            if float(amount)<= float(balance):
-                propertyid = 31
-                txid = self.rpc_connection.omn​​i_send(from_,to,propertyid,amount)
-                if txid:
-                    return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
-            return {"error":"提现数量大于可用数量"}
+        pass
+        # if from_ and to:
+        #     balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
+        #     if float(amount)<= float(balance):
+        #         propertyid = 31
+        #         txid = self.rpc_connection.omn​​i_send(from_,to,propertyid,amount)
+        #         if txid:
+        #             return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
+        #     return {"error":"提现数量大于可用数量"}
 
 
     def ltc_get_tranaddress(self,address):
