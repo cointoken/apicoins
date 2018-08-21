@@ -4,6 +4,7 @@ from .rpc import Proxy
 from . import exc
 import requests
 import json
+from dateteime import datatime
 
 class Btc(object):
     def __init__(self,rpc_port,rpc_user,rpc_password):
@@ -31,11 +32,18 @@ class Btc(object):
 
     
     def sendtoaddress(self,bitcoinaddress,amount):
-        return self.rpc_connection.sendtoaddress(bitcoinaddress,amount)
+        if  bitcoinaddress:
+            txid = self.rpc_connection.sendtoaddress(bitcoinaddress,amount)
+            if txid:
+                return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
 
 
     def sendfrom(self,fromaccount,tobitcoinaddress,amount):
-    	return self.rpc_connection.sendfrom(fromaccount,tobitcoinaddress,amount)
+        return self.rpc_connection.sendfrom(fromaccount,tobitcoinaddress,amount)
+        # if  tobitcoinaddress:
+        #     txid = self.rpc_connection.sendtoaddress(tobitcoinaddress,amount)
+        #     if txid:
+        #         return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
     
     
     '''
@@ -73,6 +81,17 @@ class Btc(object):
             except:
                 return 'transactions_error'
         return 'transactions_error'
+
+
+    def usdt_send_from(self,from_,to,amount):
+        if from_ and to:
+            balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
+            if float(amount)<= float(balance):
+                propertyid = 31
+                txid = self.rpc_connection.omn​​i_send(from_,to,propertyid,amount)
+                if txid:
+                    return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
+            return {"error":"提现数量大于可用数量"}
 
 
     def ltc_get_tranaddress(self,address):

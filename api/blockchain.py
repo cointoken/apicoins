@@ -95,12 +95,18 @@ def validateaddress(name,address):
         validate = {"valid_address": True} if validate['isvalid'] else {"valid_address": False}
     return get_success_json('validate_address','info',validate)
 
-# @app.route('/api/v1/sendtoaddress/<string:name>/<string:address>/<int:amount>')
-# def sendtoaddress(name,address,amount):
-#     if  datas.rpc_infos[name]['method']=='btc':
-#         return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(address,amount))
-#     #else：
-#     #    pass
+
+@app.route('/api/v1/sendtoaddress/<string:name>/<string:fromaddress>/<string:toaddress>/<string:amount>')
+def sendtoaddress(name,fromaddress,toaddress,amount):
+    content = ''
+    # if  datas.rpc_infos[name]['method']=='btc':
+    #     if name == 'usdt':
+    #         content = instances[name].usdt_send_from(fromaddress,toaddress,amount)
+    # else:
+    #     if name == 'eth':
+    #         pass 
+    # return get_success_json('sendtoaddress','info',instances[name].sendtoaddress(content)
+
 
 # @app.route('/api/v1/dumpprivkey/<string:name>/<string:address>')
 # def dumpprivkey(name,address):

@@ -1,7 +1,7 @@
 import json
 import requests
 import collections
-
+from datetime import datetime
 
 data = "{\"status\":200,\"message\":\"success\", \"data\":{\"deposits\":[{\"fund_uid\":\"\",\"amount\":10000,\"currency\":\"btc\"},{\"fund_uid\":\"\",\"amount\":8888,\"currency\":\"ltc\"}] }}"
 
@@ -89,8 +89,15 @@ def etc_get_transaction(address):
                 return 'transactions_api_key_error'
             return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':item['value']['ether']}
             
+def testcc(amount):
+    balance = '100.00'
+    if float(amount) <= float(balance):
+        print('ok')
+        
 
 if __name__ == '__main__':
     #print(getTransaction(''))
-    print(etc_get_transaction('0xCd6b6de6e4C471368108b895C899F7Bd0e48f305'))
+    # print(etc_get_transaction('0xCd6b6de6e4C471368108b895C899F7Bd0e48f305'))
+    print(datetime.now())
+    testcc('90.1111')
     #testdict("{'234':123}")
