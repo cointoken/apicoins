@@ -4,7 +4,7 @@ from .rpc import Proxy
 from . import exc
 import requests
 import json
-from dateteime import datatime
+from datetime import datatime
 
 class Btc(object):
     def __init__(self,rpc_port,rpc_user,rpc_password):
