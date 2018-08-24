@@ -98,7 +98,19 @@ def validateaddress(name,address):
 
 @app.route('/api/v1/sendtoaddress/<string:name>/<string:fromaddress>/<string:toaddress>/<string:amount>')
 def sendtoaddress(name,fromaddress,toaddress,amount):
-    content = ''
+    if name not in instances:
+        return not_found_json('valiaddress')   
+
+    try:
+        instances[name] = objects[name]
+    except Exception as e:
+        logger.error('sendtoaddress:{}'.format(e))
+        instances[name] = objects[name]
+        
+    if name == 'eth':
+        return get_success_json('sendtoaddress','info',instances[name].sendTransaction(fromaddress,toaddress,amount))
+        
+        
     # if  datas.rpc_infos[name]['method']=='btc':
     #     if name == 'usdt':
     #         content = instances[name].usdt_send_from(fromaddress,toaddress,amount)

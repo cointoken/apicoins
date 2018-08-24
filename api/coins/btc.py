@@ -32,10 +32,10 @@ class Btc(object):
 
     
     def sendtoaddress(self,bitcoinaddress,amount):
-        if  bitcoinaddress:
+        if  bitcoinaddress and amount>0:
             txid = self.rpc_connection.sendtoaddress(bitcoinaddress,amount)
             if txid:
-                return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
+                return {'fromaddress':'','toaddress':bitcoinaddress,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
 
 
     def sendfrom(self,fromaccount,tobitcoinaddress,amount):
@@ -85,14 +85,14 @@ class Btc(object):
 
     def usdt_send_from(self,from_,to,amount):
         pass
-        # if from_ and to:
-        #     balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
-        #     if float(amount)<= float(balance):
-        #         propertyid = 31
-        #         txid = self.rpc_connection.omn​​i_send(from_,to,propertyid,amount)
-        #         if txid:
-        #             return {'fromaddress':from_,'toaddress':to,'category':'send','time':datatime.now(),'txid':txid,'amount':amount}
-        #     return {"error":"提现数量大于可用数量"}
+        if from_ and to:
+            balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
+            if float(amount)<= float(balance):
+                propertyid = 31
+                txid = self.rpc_connection.omni_send(from_,to,propertyid,amount)
+                if txid:
+                    return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
+            return {"error":"提现数量大于可用数量"}
 
 
     def ltc_get_tranaddress(self,address):

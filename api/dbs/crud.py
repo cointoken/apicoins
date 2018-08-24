@@ -31,9 +31,10 @@ class CRUD():
 
 
     def deposits_insert(self,deposits):
-        if isinstance(deposits,Deposits):
-            self.session.add(deposits)
-            self.session.commit()
+        if deposits is not None:
+            if isinstance(deposits,Deposits):
+                self.session.add(deposits)
+                self.session.commit()
 
 
     def deposits_update(self,address,txid):

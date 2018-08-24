@@ -23,5 +23,11 @@ def getdepositinfos():
     url='http://{0}'.format()
     r = requests.get(url,header=header,params=params)
     j = json.loads(r.content)
-    arrs = 
+
+
+def transfer(currency,address,amount):
+    if currency and address:
+        if currency=='usdt':
+            
+    
     
