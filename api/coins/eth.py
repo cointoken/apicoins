@@ -46,7 +46,7 @@ class Eth(object):
 
     def sendTransaction(self,from_,to,amount):
         crud = CRUD(self.engine)
-        passphrase = crud.query_from_address(from_)
+        passphrase = crud.coins_query_from_address(from_)
         if passphrase and from_ and to:
             #transaction = {from:from_, to: to, value: self.w3.toWei(value, "ether")}
             # tx = {from:from_,to:to,value:self.w3.toWei(value,"ether")}
