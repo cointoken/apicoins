@@ -50,9 +50,9 @@ class Eth(object):
         if passphrase and from_ and to:
             #transaction = {from:from_, to: to, value: self.w3.toWei(value, "ether")}
             # tx = {from:from_,to:to,value:self.w3.toWei(value,"ether")}
-            tx = { 'from': str(from_),'to': str(to),'value':str(self.w3.toWei(amount,'ether'))}
+            tx = { 'from': str(from_),'to': str(to),'value':self.w3.toWei(amount,'ether')}
             print(tx)
-            txid = self.w3.personal.sendTransaction(tx, passphrase)
+            txid = self.w3.personal.sendTransaction(tx, str(passphrase)
             if txid:
                 return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
         # return self.w3.eth.sendTransaction(to,from_,value)
