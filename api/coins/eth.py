@@ -46,7 +46,7 @@ class Eth(object):
 
     def sendTransaction(self,from_,to,amount):
         crud = CRUD(self.engine)
-        passphrase = str(crud.coins_query_from_address(from_))
+        passphrase = crud.coins_query_from_address(from_)
         print(type(passphrase),passphrase)
         if passphrase and from_ and to:
             flag = self.w3.personal.unlockAccount(from_, passphrase)
