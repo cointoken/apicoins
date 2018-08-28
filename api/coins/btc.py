@@ -5,6 +5,8 @@ from . import exc
 import requests
 import json
 from datetime import datetime
+import time
+
 
 class Btc(object):
     def __init__(self,rpc_port,rpc_user,rpc_password):
@@ -118,6 +120,33 @@ class Btc(object):
                     return 'transactions_error'
         return 'transactions_error'
 
+
+ 
+
+    ####给云平台提供交易查询使用
+    @staticmethod
+    def get_curr_seconds():
+        return int(time.mktime(datetime.now().timetuple()))
+
+
+    @staticmethod
+    def btc_transactions(address,amount):
+        result = 'transactions_empty'
+        if address and amount >0:
+            btc_url = 'https://bitaps.com/api/address/transactions/{0}'.format(address)
+            try:
+                r = requests.get(btc_url)
+                if r.content:
+                    js = json.loads(r.content)
+                    if js:
+                        amount = amount * 100000000
+                        #now_seconds = Btc.get_curr_seconds()
+                        for j in js:
+                            if j[3]=='received' and j[4]=='confirmed' and j[7]==amount:
+                                return {'txid':j[1]}
+            except:
+                result = 'transactions_get_error'
+        return result
 
 # if __name__=='__main__':
 #     print(Btc.ltc_get_address('MJFUvSKPqC8FuEQixFsWNzB5Rs6a9GKjyJ'))

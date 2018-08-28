@@ -7,7 +7,9 @@ error_infos = {
     'gateway_timeout':{'status':504,'message':'gateway timeout','data':''},
     'internal_server_error':{'status':500,'message':'internal server error','data':''},
 	'transactions_api_key_error':{'status': 500,'message': 'fail','data': {'error':{'code':11,'message':'Invalid API key'}}},
-	'transactions_error':{'status': 500,'message': 'fail','data': {'error':{'code':10,'message':'transactions error or invaild address'}}}
+	'transactions_error':{'status': 500,'message': 'fail','data': {'error':{'code':10,'message':'transactions error or invaild address'}}},
+	'transactions_empty':{'status': 500,'message': 'fail','data': {'error':'address or amount is empty'}},
+	'transactions_get_error':{'status': 500,'message': 'fail','data': {'error':'network error or invaild address'}}
 }
 
 status_code = {

@@ -173,6 +173,20 @@ def listtransactions(name,address):
             return get_success_json('transactions','info',trans)
 
 
+@app.route('/api/vi/transactions/<string:name>/<string:address>/<float:amount>')
+def transactions(name,address,amount):
+    if name not in instances:
+        return not_found_json('transtatus')
+    trans = ''
+    if name =='btc':
+        trans = Btc.btc_transactions(address,amount)
+    
+    if trans =='transactions_empty' or trans =='transactions_get_error':
+        return get_code_error(trans)
+    else:
+        return get_success_json('transactions','info',trans)
+
+
 @app.errorhandler(403)
 def forbidden(error):
     logger.error(repr(error))
@@ -205,6 +219,6 @@ def gateway_timeout(error):
     return make_response(jsonify(datas.error_infos['gateway_timeout']),datas.status_code['504'])
 
     
-if __name__ == "__main__":
-    app.run(host='0.0.0.0',port='8080',debug=False)
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0',port='8080',debug=False)
 
