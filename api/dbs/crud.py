@@ -19,8 +19,8 @@ class CRUD():
 
     def coins_query_from_address(self,address_):
         if address_:
-            passphrase = self.session.query(Coins.passphrase).filter_by(address=address_).first()[0]
-            return passphrase
+            coins = self.session.query(Coins).filter_by(address=address_).first()
+            return coins.passphrase
 
 
     def coins_update(self,passphrase_,address):
