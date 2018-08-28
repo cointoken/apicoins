@@ -173,7 +173,7 @@ def listtransactions(name,address):
             return get_success_json('transactions','info',trans)
 
 
-@app.route('/api/vi/transactions/<string:name>/<string:address>/<float:amount>')
+@app.route('/api/v1/transactions/<string:name>/<string:address>/<float:amount>')
 def transactions(name,address,amount):
     if name not in instances:
         return not_found_json('transtatus')
