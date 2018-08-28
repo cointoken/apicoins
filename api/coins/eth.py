@@ -27,8 +27,12 @@ class Eth(object):
         #engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
         crud = CRUD(self.engine)
         crud.coins_insert(coins)
-
-        address = self.w3.personal.newAccount(passphrase)
+ 
+        address =''
+        try:
+            address = self.w3.personal.newAccount(passphrase)
+        except:
+            address =''
         crud.coins_update(passphrase,address)
         crud.close()
         return address
@@ -46,14 +50,14 @@ class Eth(object):
 
     def sendTransaction(self,from_,to,amount):
         crud = CRUD(self.engine)
-        passphrase = crud.coins_query_from_address(from_)
+        passphrase = str(crud.coins_query_from_address(from_))
         print(type(passphrase),passphrase)
         if passphrase and from_ and to:
             flag = self.w3.personal.unlockAccount(from_, passphrase)
             if flag:
                 tx = { 'from': str(from_),'to': str(to),'value':self.w3.toWei(amount,'ether')}
                 print(tx)
-                print(passphrase)
+                # print(passphrase)
                 txid = self.w3.personal.sendTransaction(tx, passphrase)
                 if txid:
                     return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
