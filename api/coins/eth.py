@@ -53,14 +53,12 @@ class Eth(object):
         passphrase = str(crud.coins_query_from_address(from_))
         print(type(passphrase),passphrase)
         if passphrase and from_ and to:
-            flag = self.w3.personal.unlockAccount(from_, passphrase)
-            if flag:
-                tx = { 'from': str(from_),'to': str(to),'value':self.w3.toWei(amount,'ether')}
-                print(tx)
-                # print(passphrase)
-                txid = self.w3.personal.sendTransaction(tx, passphrase)
-                if txid:
-                    return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
+            # flag = self.w3.personal.unlockAccount(from_, passphrase)
+            # if flag:
+            tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
+            txid = self.w3.personal.sendTransaction(tx, passphrase)
+            if txid:
+                return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
         # return self.w3.eth.sendTransaction(to,from_,value)
         # return self.w3.eth.getBalance(address)
     
