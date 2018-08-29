@@ -148,8 +148,52 @@ class Btc(object):
                 result = 'transactions_get_error'
         return result
 
-# if __name__=='__main__':
-#     print(Btc.ltc_get_address('MJFUvSKPqC8FuEQixFsWNzB5Rs6a9GKjyJ'))
+
+    @staticmethod
+    def usdt_get_transactions(address,amount):
+        result = 'transactions_empty'
+        deposit_url = 'https://api.omniexplorer.info/v1/transaction/address'
+        post_data = {
+            'addr': address,
+            'page': 0
+        }
+        if address:
+            r = requests.post(deposit_url,data=post_data)
+            j = json.loads(r.content)
+            try:
+                toaddress = j['address']
+                ts = j['transactions']
+                if ts:
+                    #ow_seconds = Coins.get_curr_seconds() 
+                    for t in ts: #and now_seconds-t['blocktime']<1800 
+                        if toaddress == address and t['amount']==amount and t['valid']==True:
+                            return {'txid': t['txid']}
+            except:
+                result = 'transactions_get_error'
+        return result
+
+    
+    @staticmethod
+    def ltc_get_transactions(address,amount):
+        result = 'transactions_empty'
+        ltc_url = 'https://chain.so/api/v2/address/ltc/{0}'
+        if address:
+            r = requests.get(ltc_url.format(address))
+            j = json.loads(r.content)
+            try:
+                txs =  j['data']['txs']
+                for tx in txs:
+                    if 'incoming' in tx:
+                        if float(tx['incoming']['value'])==amount and  tx['confirmations']>0:
+                            return {'txid': tx['txid']}   
+            except:
+                result = 'transactions_get_error'
+        return result
+
+# unlock wallet
+# sendtoaddress sendmany
+##sendfrom  
+# utxo 
 
     
 

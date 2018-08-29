@@ -97,4 +97,44 @@ class Eth(object):
             return {'address':address,'category':category,'time':item['timestamp'],'txid':item['hash'],'amount':str(item['value']['ether'])}
         return 'transactions_error'
             
+
+    @staticmethod
+    def eth_get_transactions(address,amount):
+        result = 'transactions_empty'
+        if address and amount>0:
+            eth_url = 'http://api.ethplorer.io/getAddressTransactions/{0}'.format(address)
+            params = {'apiKey':'freekey'}
+            r = requests.get(eth_url,params=params)
+            rc = r.content
+            if rc :
+                js = json.loads(rc)
+                try:
+                    if js:
+                        #now_seconds = Coins.get_curr_seconds() 
+                        for j in js: #now_seconds-j['timestamp']<1800 and
+                            if  j['to']==address.lower() and j['value']==amount and j['success']==True:
+                                return {'txid': j['hash']}
+                except:
+                    result = 'transactions_get_error'
+        return result
+
+
+    @staticmethod
+    def etc_get_transactions(address,amount):
+        result = 'transactions_empty'
+        if address and amount>0:
+            etc_url = 'https://api.gastracker.io/v1/addr/{0}/operations'.format(address)
+            r = requests.get(etc_url)
+            js = json.loads(r.content)
+            if js:
+                try:
+                    js = js['items']
+                    now_date = datetime.today().strftime('%Y-%m-%d')
+                    for j in js:
+                       if j['timestamp'].find(now_date)!=-1 and j['to']==address and j['value']['ether']==amount and j['isSend']==False and j['failed']==False:
+                           return {'txid': j['hash']}
+                except:
+                    result = 'transactions_get_error'
+        return result      
+
             

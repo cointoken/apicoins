@@ -3,6 +3,7 @@ import requests
 import collections
 from datetime import datetime
 
+
 data = "{\"status\":200,\"message\":\"success\", \"data\":{\"deposits\":[{\"fund_uid\":\"\",\"amount\":10000,\"currency\":\"btc\"},{\"fund_uid\":\"\",\"amount\":8888,\"currency\":\"ltc\"}] }}"
 
 
@@ -95,9 +96,5 @@ def testcc(amount):
         print('ok')
         
 
-if __name__ == '__main__':
-    #print(getTransaction(''))
-    # print(etc_get_transaction('0xCd6b6de6e4C471368108b895C899F7Bd0e48f305'))
-    print(datetime.now())
-    testcc('90.1111')
-    #testdict("{'234':123}")
+# if __name__=='__main__':
+#     print(ltc_get_transaction('LQufNbMNXknNBkdWF5xj8WZGsyN8x8aifo',0.10000000))

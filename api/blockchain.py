@@ -96,19 +96,19 @@ def validateaddress(name,address):
     return get_success_json('validate_address','info',validate)
 
 
-@app.route('/api/v1/sendtoaddress/<string:name>/<string:fromaddress>/<string:toaddress>/<string:amount>')
-def sendtoaddress(name,fromaddress,toaddress,amount):
-    if name not in instances:
-        return not_found_json('valiaddress')   
+# @app.route('/api/v1/sendtoaddress/<string:name>/<string:fromaddress>/<string:toaddress>/<string:amount>')
+# def sendtoaddress(name,fromaddress,toaddress,amount):
+#     if name not in instances:
+#         return not_found_json('valiaddress')   
 
-    try:
-        instances[name] = objects[name]
-    except Exception as e:
-        logger.error('sendtoaddress:{}'.format(e))
-        instances[name] = objects[name]
+#     try:
+#         instances[name] = objects[name]
+#     except Exception as e:
+#         logger.error('sendtoaddress:{}'.format(e))
+#         instances[name] = objects[name]
         
-    if name == 'eth':
-        return get_success_json('sendtoaddress','info',instances[name].sendTransaction(fromaddress,toaddress,amount))
+#     if name == 'eth':
+#         return get_success_json('sendtoaddress','info',instances[name].sendTransaction(fromaddress,toaddress,amount))
         
         
     # if  datas.rpc_infos[name]['method']=='btc':
@@ -177,10 +177,19 @@ def listtransactions(name,address):
 def transactions(name,address,amount):
     if name not in instances:
         return not_found_json('transtatus')
+
     trans = ''
     if name =='btc':
         trans = Btc.btc_transactions(address,amount)
-    
+    elif name=='usdt':
+        trans = Btc.usdt_get_transactions(address,amount)
+    elif name=='ltc':
+        trans = Btc.ltc_get_transactions(address,amount)
+    elif name=='eth':
+        trans = Eth.eth_get_transactions(address,amount)
+    elif name=='etc':
+        trans = Eth.etc_get_transactions(address,amount)
+        
     if trans =='transactions_empty' or trans =='transactions_get_error':
         return get_code_error(trans)
     else:

@@ -30,16 +30,16 @@ class Deposits(Base):
     __tablename__ = 'deposits' 
     id = Column('id',Integer,primary_key = True)
     currency = Column('currency',String(20))
-    address = Column('address',String(255))
+    from_address = Column('from_address',String(255))
+    to_address = Column('to_address',String(255))
     amount = Column('amount',DECIMAL(16,8)) 
     txid = Column('txid',String(255))
     status = Column('status',String(1))
     created_at = Column('created_at',DateTime)
-    def __init__(self,currency,address,amount,txid,created_at):
+    def __init__(self,currency,address,amount,created_at):
         self.currency = currency
         self.address = address
         self.amount = amount
-        self.txid = txid
         self.status = '0'
         self.created_at = created_at
 
