@@ -1,12 +1,61 @@
 
+from __future__ import absolute_import
 import unittest
 import json
 import re
+from datetime import datetime
+import requests
+import json
+import sys
+sys.path.append('..')
+from dbs.models import  Deposits
+from dbs.crud import CRUD
+import config
+
+dic = {
+  "": -0.04542530,
+  "payment": 0.04597393
+}
+dic1 = {
+
+}
+def test_null():
+    for key,value in dic1.items():
+        if dic1[key] > 0.03:
+            print(dic1[key],key)
+
+def test_time():
+    print(datetime.now().strftime('%Y-%m-%d'))
 
 
-class TestStringMethod(unittest.TestCase):
-    def test_upper(self):
-        self.assertEqual('foo'.upper(),'FcO')
+def now_time():
+    return datetime.now().strftime('%Y-%m-%d')
+
+
+def import_deposits():
+    from sqlalchemy import create_engine
+    engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+    crud = CRUD(engine)
+    datas = crud.deposits_query_from_currency('btc')
+    print(len(datas))
+    for d in datas:
+        print(d.deposit_id,d.currency,d.amount)
+
+
+    # deposit_url = 'http://192.168.1.143:3000/admin/success_deposits?begin_time={0}&end_time={1}'.format('2018-08-06','2018-08-06')
+    # print(deposit_url)
+    # r = requests.get(deposit_url)
+    # j = json.loads(r.content)
+    # if j:
+    #     try:
+    #         if j['status']==200 and j['message']=='success':
+    #             datas = j['data']
+                
+    #             for d in datas:
+    #                 de = Deposits(d['id'],d['currency'],d['email'],d['phone_number'],float(d['amount']),float(d['fee']),d['fund_uid'],datetime.strptime(d['created_at'],'%Y-%m-%d %H:%M:%S'))
+    #                 crud.deposits_insert(de)
+    #     except:
+    #        pass
 
 
 if __name__=='__main__':
@@ -20,4 +69,4 @@ if __name__=='__main__':
     # r = r[:r.find('(')]
     # r = r[r.find("\"")+1:]
     # print(r)
-    unittest.main()
+    # import_deposits()
