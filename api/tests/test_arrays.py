@@ -36,6 +36,9 @@ def import_deposits():
     from sqlalchemy import create_engine
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
     crud = CRUD(engine)
+    eth_datas = crud.deposits_query_from_currency('btc')
+    if len(eth_datas)>0:
+        print(len(eth_datas))
     # datas = crud.deposits_query_from_currency('btc')
     # # print(len(datas))
     # # for d in datas:
@@ -54,9 +57,9 @@ def import_deposits():
     #             # print(d)
     #             de = Deposits(d['id'],d['currency'],d['email'],d['phone_number'],float(d['amount']),float(d['fee']),d['fund_uid'],datetime.strptime(d['created_at'],'%Y-%m-%d %H:%M:%S'))
     #             crud.deposits_insert(de)
-    crud.deposits_update_from_deposit_id(12,'1Pqd7NjttazdK4Pk8kfhL7XguhDgknSfjH','77ab80b2f6a08af8969692a9e856dc2563dbe4f08d16fb7ac0ced994053ab837')
-    txid = crud.deposits_query_from_address('447e8b88')
-    print(txid)
+    # crud.deposits_update_from_deposit_id(12,'1Pqd7NjttazdK4Pk8kfhL7XguhDgknSfjH','77ab80b2f6a08af8969692a9e856dc2563dbe4f08d16fb7ac0ced994053ab837')
+    # txid = crud.deposits_query_from_address('447e8b88')
+    # print(txid)
 
 
 if __name__=='__main__':
