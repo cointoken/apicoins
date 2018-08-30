@@ -31,8 +31,9 @@ class CRUD():
 
 
     def deposits_insert(self,deposits):
-        if deposits is not None:
-            if isinstance(deposits,Deposits):
+        if deposits is not None and isinstance(deposits,Deposits):
+            r = self.session.query(Deposits).filter_by(deposit_id=Deposits.deposit_id).first()
+            if r is None:
                 self.session.add(deposits)
                 self.session.commit()
 
@@ -40,8 +41,9 @@ class CRUD():
     def deposits_update(self,address,txid):
         if address:
             deposits = self.session.query(Deposits).filter_by(address=address).first()
-            deposits.txid = txid
-            self.session.commit()
+            if len(deposits)>0:
+                deposits.txid = txid
+                self.session.commit()
 
 
     def deposits_query_from_address(self,address):
@@ -50,6 +52,21 @@ class CRUD():
             return txid    
 
 
+    def deposits_query_from_currency(self,currency):
+        if currency:
+            datas = self.session.query(Deposits).filter_by(currency=currency,status=0).all()
+            return datas
+
+
+    def deposits_update_from_deposit_id(self,deposit_id,to_address,txid):
+        if deposit_id>0:
+            deposit = self.session.query(Deposits).filter_by(deposit_id=deposit_id).first()
+            if len(deposit)>0:
+                 deposit.status = True
+                 deposit.txid = txid
+                 deposit.to_address = to_address
+    
+    
     def close(self):
         self.session.close()
 

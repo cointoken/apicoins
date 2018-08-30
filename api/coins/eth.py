@@ -56,12 +56,12 @@ class Eth(object):
             # print(flag,passphrase)
             #  if flag:
             tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
-            txid = self.w3.personal.sendTransaction(tx, 'stopwatch mascot sectional mounted finer neurosis malformed twerp')
-            if txid:
-                return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}  
-        # return self.w3.eth.sendTransaction(to,from_,value)
-        # return self.w3.eth.getBalance(address)
-    
+            try:
+                txid = self.w3.personal.sendTransaction(tx, 'stopwatch mascot sectional mounted finer neurosis malformed twerp')
+                return txid
+            except:
+                return 'error'
+
 
     @staticmethod
     def eth_get_transaction(address):

@@ -33,15 +33,42 @@ class Btc(object):
     	return self.rpc_connection.validateaddress(bitcoinaddress)
 
     
+    def getbalance(self,account):
+        if account == "":
+            return self.rpc_connection.getbalance("") 
+        if account:
+            return self.rpc_connection.getbalance(account) 
+        return self.rpc_connection.getbalance()
+
+        
     def sendtoaddress(self,bitcoinaddress,amount):
-        if  bitcoinaddress and amount>0:
+        if bitcoinaddress and amount>0:
             txid = self.rpc_connection.sendtoaddress(bitcoinaddress,amount)
             if txid:
                 return {'fromaddress':'','toaddress':bitcoinaddress,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
 
 
-    def sendfrom(self,fromaccount,tobitcoinaddress,amount):
-        return self.rpc_connection.sendfrom(fromaccount,tobitcoinaddress,amount)
+    '''
+    返回钱包中未使用的事务输入数组
+    '''
+    def listunspent(self,minconf=1,maxconf=999999):
+        return self.rpc_connection.listunspent(minconf,maxconf)
+
+    
+    '''
+    返回具有帐户名称作为键，帐户余额作为值的对象
+    '''
+    def listaccounts(self):
+        return self.rpc_connection.listaccounts()
+
+
+    '''
+    @amount   是一个实数，并四舍五入到小数点后8位
+    @minconf  确认确保帐户具有有效余额
+    '''
+    def sendfrom(self,fromaccount,tobitcoinaddress,amount,minconf=1):
+        if tobitcoinaddress and amount>0:
+            return self.rpc_connection.sendfrom(fromaccount,tobitcoinaddress,amount,minconf)
         # if  tobitcoinaddress:
         #     txid = self.rpc_connection.sendtoaddress(tobitcoinaddress,amount)
         #     if txid:
@@ -86,15 +113,17 @@ class Btc(object):
 
 
     def usdt_send_from(self,from_,to,amount):
-        pass
+        result ='none'
         if from_ and to:
-            balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
-            if float(amount)<= float(balance):
-                propertyid = 31
-                txid = self.rpc_connection.omni_send(from_,to,propertyid,amount)
-                if txid:
-                    return {'fromaddress':from_,'toaddress':to,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
-            return {"error":"提现数量大于可用数量"}
+            try:
+                balance = self.rpc_connection.omni_getallbalancesforaddress(from_)[0]['balance']
+                if float(amount)<= float(balance):
+                    propertyid = 31
+                    txid = self.rpc_connection.omni_send(from_,to,propertyid,amount)
+                    return txid
+            except:
+                 result = 'error'
+            return result
 
 
     def ltc_get_tranaddress(self,address):
@@ -194,6 +223,15 @@ class Btc(object):
 # sendtoaddress sendmany
 ##sendfrom  
 # utxo 
+# unspent output
+# 1、 listunspent [minconf] [maxconf] '["address"]'
+# 2、 createrawtransaction [{'txid':txid,'vout':n}]
+#     {'sendfromaddress':amount,'changaddress':amount}  //找零地址
+# 3、 decoderawtransaction <hex string>
+# 4、 signrawtransaction <hex string>
+#      [{"txid":txid,"vout":n,"scriptPubKey":hex,"redeeemScript":hex}]
+#      sighashtype = "ALL"]
+#      用 getrawtransaction <txit> [verbose=0]
 
     
 

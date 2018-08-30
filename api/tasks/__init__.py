@@ -1,4 +1,6 @@
 from celery import Celery
+from sqlalchemy import create_engine
+from datetime import datetime
 
-app  = Celery('getaddress')
-app.config_from_object('app.config')
+worker  = Celery('worker')
+worker.config_from_object('app.config')

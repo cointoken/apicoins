@@ -31,4 +31,4 @@ LOGGING_CONFIG = {
     }
 }
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:toApx08@c#@localhost:3307/exchange'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:admin@localhost/exchange'
