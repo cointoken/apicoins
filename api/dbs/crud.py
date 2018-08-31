@@ -32,24 +32,16 @@ class CRUD():
 
     def deposits_insert(self,deposits):
         if deposits is not None and isinstance(deposits,Deposits):
-            r = self.session.query(Deposits).filter_by(deposit_id=Deposits.deposit_id).first()
+            r = self.session.query(Deposits).filter_by(deposit_id=deposits.deposit_id).first()
             if r is None:
                 self.session.add(deposits)
                 self.session.commit()
 
 
-    def deposits_update(self,address,txid):
-        if address:
-            deposits = self.session.query(Deposits).filter_by(address=address).first()
-            if len(deposits)>0:
-                deposits.txid = txid
-                self.session.commit()
-
-
     def deposits_query_from_address(self,address):
         if address:
-            txid = self.session.query(Deposits.txid).filter_by(address=address).first()
-            return txid    
+            deposit = self.session.query(Deposits).filter_by(from_address=address,status=1).first()
+            return deposit.txid    
 
 
     def deposits_query_from_currency(self,currency):
@@ -60,23 +52,17 @@ class CRUD():
 
     def deposits_update_from_deposit_id(self,deposit_id,to_address,txid):
         if deposit_id>0:
-            deposit = self.session.query(Deposits).filter_by(deposit_id=deposit_id).first()
-            if len(deposit)>0:
+            deposit = self.session.query(Deposits).filter_by(deposit_id=deposit_id,status=0).first()
+            if deposit:
                  deposit.status = True
                  deposit.txid = txid
                  deposit.to_address = to_address
+                 self.session.commit()
     
     
     def close(self):
         self.session.close()
 
 
-# if __name__ == '__main__':
-#     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:toApx08@c#@localhost:3307/exchange'
-#     coins = Coins('eth','0x8EDdDd51b392Ab6b090D0Fd079D5648962E29abc',Passphrase.generate(7),datetime.now())
-#     engine = create_engine(SQLALCHEMY_DATABASE_URI)
-#     crud = CRUD(engine)
-#     crud.insert(coins)
-#     crud.close()
 
 

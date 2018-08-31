@@ -15,17 +15,13 @@ def autotransfer():
         amount = btc_accounts[key] 
         if amount >= 1:
             txid = btc.sendfrom(key,"",amount)
-            if txid:
-                pass
-    
+
     ltc = Btc(8337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
     ltc_accounts = ltc.listaccounts()
     for key,value in ltc_accounts.items():
         amount = ltc_accounts[key]
         if amount >=20:
             txid = ltc.sendfrom(key,"",amount)
-            if txid:
-                pass
 
     usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
