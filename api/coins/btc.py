@@ -47,13 +47,6 @@ class Btc(object):
             if txid:
                 return {'fromaddress':'','toaddress':bitcoinaddress,'category':'send','time':datetime.now(),'txid':txid,'amount':amount}
 
-
-    '''
-    返回钱包中未使用的事务输入数组
-    '''
-    def listunspent(self,minconf=1,maxconf=999999):
-        return self.rpc_connection.listunspent(minconf,maxconf)
-
     
     '''
     返回具有帐户名称作为键，帐户余额作为值的对象
@@ -82,6 +75,20 @@ class Btc(object):
         return self.rpc_connection.dumpprivkey(address)
 
 
+    def getreceivedbyaddress(self,address,minconf=1):
+        if address:
+            return self.rpc_connection.getreceivedbyaddress(address,minconf)
+
+
+    #utxo
+    '''
+    返回钱包中未使用的事务输入数组
+    '''
+    def listunspent(self,minconf=1,maxconf=999999):
+        return self.rpc_connection.listunspent(minconf,maxconf) 
+
+    
+    def 
     
     @staticmethod
     def usdt_get_deposit(address):
@@ -219,19 +226,6 @@ class Btc(object):
                 result = 'transactions_get_error'
         return result
 
-# unlock wallet
-# sendtoaddress sendmany
-##sendfrom  
-# utxo 
-# unspent output
-# 1、 listunspent [minconf] [maxconf] '["address"]'
-# 2、 createrawtransaction [{'txid':txid,'vout':n}]
-#     {'sendfromaddress':amount,'changaddress':amount}  //找零地址
-# 3、 decoderawtransaction <hex string>
-# 4、 signrawtransaction <hex string>
-#      [{"txid":txid,"vout":n,"scriptPubKey":hex,"redeeemScript":hex}]
-#      sighashtype = "ALL"]
-#      用 getrawtransaction <txit> [verbose=0]
 
     
 

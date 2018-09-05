@@ -13,15 +13,17 @@ def autotransfer():
     btc_accounts = btc.listaccounts()
     for key,value in btc_accounts.items():
         amount = btc_accounts[key] 
-        if amount >= 1:
-            txid = btc.sendfrom(key,"",amount)
+        if amount >= 0.1 and amount <= 1 : #hot wallet
+            txid = btc.sendfrom(key,"3FyyccCiTt3TUbvVXw3gsn6W5nRCUY1tPi",amount)
+        elif amount>1: #cold walllet
+            txid = btc.sendfrom(key,"1LAzU3gX58zBzKfbNXcyUZjhTeBVWJ7c1c",amount)
 
     ltc = Btc(8337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
     ltc_accounts = ltc.listaccounts()
     for key,value in ltc_accounts.items():
         amount = ltc_accounts[key]
         if amount >=20:
-            txid = ltc.sendfrom(key,"",amount)
+            txid = ltc.sendfrom(key,"LXycyyLyE6VmdkJBtsZKPLqbZQWrRZTBu6",amount)
 
     usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
@@ -37,7 +39,7 @@ def autotransfer():
     eth_datas = crud.deposits_query_from_currency('eth')
     if len(eth_datas)>0:
         for d in eth_datas:
-            txid = eth.sendTransaction(d['from_address'],'',d[amount])
+            txid = eth.sendTransaction(d['from_address'],'0xcF4eE0559801552b6d499CeC5a8775ca60242771',d[amount])
             if txid!= 'error':
                 crud.deposits_update_from_deposit_id(d['deposit_id'],'',txid)
                 
@@ -45,7 +47,7 @@ def autotransfer():
     etc_datas = crud.deposits_query_from_currency('etc')
     if len(etc_datas)>0:
         for d in etc_datas:
-            txid = etc.sendTransaction(d['from_address'],'',d[amount])
+            txid = etc.sendTransaction(d['from_address'],'0xcae3775256dc09e1c7fda5d91ca0cac1b846595f',d[amount])
             if txid!= 'error':
                 crud.deposits_update_from_deposit_id(d['deposit_id'],'',txid)
 

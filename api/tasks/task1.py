@@ -15,7 +15,7 @@ def now_time():
 
 @worker.task
 def import_deposits():
-    deposit_url = 'http://192.168.1.143:3000/admin/success_deposits?begin_time={0}&end_time={1}'.format(now_time(),now_time())
+    deposit_url = 'http://47.52.209.94:3030/admin/success_deposits?begin_time={0}&end_time={1}'.format(now_time(),now_time())
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
     crud = CRUD(engine)
 
