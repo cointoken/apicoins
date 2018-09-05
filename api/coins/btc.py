@@ -86,9 +86,7 @@ class Btc(object):
     '''
     def listunspent(self,minconf=1,maxconf=999999):
         return self.rpc_connection.listunspent(minconf,maxconf) 
-
-    
-    def 
+        
     
     @staticmethod
     def usdt_get_deposit(address):
