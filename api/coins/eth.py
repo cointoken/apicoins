@@ -40,7 +40,8 @@ class Eth(object):
         rs = redis.Redis(host='127.0.0.1',port=6379)
         rs_len = rs.llen('ethereum')
         if rs_len>1:
-            return rs.lpop('ethereum')
+            print(bytes.decode(rs.lpop('ethereum')))
+            #return bytes.decode(rs.lpop('ethereum'))
         return ''
 
         #return self.w3.personal.importRawKey(private_key,self.passphrase)
