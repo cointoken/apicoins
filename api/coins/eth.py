@@ -51,9 +51,9 @@ class Eth(object):
 
 
     def validateaddress(self,adddress):
-        #reobj = re.match('^0x[a-fA-F0-9]{40}',adddress)
-        #return {"valid_address": True} if reobj else {"valid_address": False}
-        return  {"valid_address":self.w3.isAddress(adddress)}
+        reobj = re.match('^0x[a-fA-F0-9]{40}',adddress)
+        return {"valid_address": True} if reobj else {"valid_address": False}
+        #return  {"valid_address":self.w3.isAddress(adddress)}
 
 
     def sendTransaction(self,from_,to,amount):
