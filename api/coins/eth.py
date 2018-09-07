@@ -72,6 +72,19 @@ class Eth(object):
                 return 'error'
 
 
+    def test(self,address):
+        if address:
+            crud = CRUD(self.engine)
+            passphrase = str(crud.coins_query_from_address(address))
+            crud.close()
+            if passphrase:
+                flag = self.w3.personal.unlockAccount(address, passphrase)
+                if flag:
+                    return 'True'
+                else:
+                    return "False"
+
+
     @staticmethod
     def eth_get_transaction(address):
         #return self.w3.eth.getTransaction(transaction_hash)
