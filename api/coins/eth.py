@@ -9,6 +9,7 @@ from dbs.models import Coins
 import config
 import requests
 import json
+import redis
 
 class Eth(object):
     def __init__(self,rpc_port,name):
@@ -22,20 +23,24 @@ class Eth(object):
 
 
     def getnewaddress(self):
-        passphrase = Passphrase.generate(8)
-        coins = Coins(self.name,'',passphrase,datetime.now())
-        #engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-        crud = CRUD(self.engine)
-        crud.coins_insert(coins)
+        # passphrase = Passphrase.generate(8)
+        # coins = Coins(self.name,'',passphrase,datetime.now())
+        # #engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+        # crud = CRUD(self.engine)
+        # crud.coins_insert(coins)
  
-        address =''
-        try:
-            address = self.w3.personal.newAccount(passphrase)
-        except:
-            address =''
-        crud.coins_update(passphrase,address)
-        crud.close()
-        return address
+        # address =''
+        # try:
+        #     address = self.w3.personal.newAccount(passphrase)
+        # except:
+        #     address =''
+        # crud.coins_update(passphrase,address)
+        # crud.close()
+        # return address
+        rs = redis.Redis(host='127.0.0.1',port=6379)
+        rs_len = rs.llen('eth')
+        if rs_len>1:
+            return rs.lpop('eth')
 
         #return self.w3.personal.importRawKey(private_key,self.passphrase)
     	#return self.rpc_eth.get_coinbase()
@@ -51,6 +56,7 @@ class Eth(object):
     def sendTransaction(self,from_,to,amount):
         crud = CRUD(self.engine)
         passphrase = str(crud.coins_query_from_address(from_))
+        crud.close()
         if passphrase and from_ and to:
             # flag = self.w3.personal.unlockAccount(from_, passphrase)
             # print(flag,passphrase)
