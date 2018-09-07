@@ -23,7 +23,10 @@ print(rs.llen("eth"))
 rs_len = rs.llen("eth")
 if rs_len==0:
     for i in range(0,8):
-        rs.rpush("1",i)
+        rs.rpush("eth","cddd"+str(i))
 else:
-    for i in range(0,rs_len):
-        print(rs.lpop("1"))
+    print(str(rs.lpop("eth")))
+    # if rs.lpop("eth")==3:
+    #     print(1)
+    # for i in range(0,rs_len):
+    #     print(rs.lpop("eth"))
