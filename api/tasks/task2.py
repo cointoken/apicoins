@@ -12,7 +12,7 @@ from datetime import datetime
 def get_ethereum_addresses():
     rs = redis.Redis(host='127.0.0.1',port=6379)
     re_len = rs.llen("ethereum")
-    if re_len<20:
+    if re_len<30:
         engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
         crud = CRUD(engine)
         eth = Eth(8545,'eth')
