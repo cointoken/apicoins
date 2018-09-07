@@ -41,6 +41,7 @@ class Eth(object):
         rs_len = rs.llen('eth')
         if rs_len>1:
             return rs.lpop('eth')
+        return ''
 
         #return self.w3.personal.importRawKey(private_key,self.passphrase)
     	#return self.rpc_eth.get_coinbase()
