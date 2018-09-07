@@ -39,10 +39,11 @@ class Eth(object):
         # return address
         rs = redis.Redis(host='127.0.0.1',port=6379)
         rs_len = rs.llen('ethereum')
+        address = ''
         if rs_len>1:
-            print(bytes.decode(rs.lpop('ethereum')))
+            address = bytes.decode(rs.lpop('ethereum'))
             #return bytes.decode(rs.lpop('ethereum'))
-        return ''
+        return address
 
         #return self.w3.personal.importRawKey(private_key,self.passphrase)
     	#return self.rpc_eth.get_coinbase()
