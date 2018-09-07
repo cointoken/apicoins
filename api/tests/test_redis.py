@@ -25,7 +25,8 @@ if rs_len==0:
     for i in range(0,8):
         rs.rpush("eth","cddd"+str(i))
 else:
-    print(str(rs.lpop("eth")))
+    if bytes.decode(rs.lpop("eth"))=='cddd1':
+        print('cddd0')
     # if rs.lpop("eth")==3:
     #     print(1)
     # for i in range(0,rs_len):
