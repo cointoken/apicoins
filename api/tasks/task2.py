@@ -23,11 +23,12 @@ def get_ethereum_addresses():
             address =''
             try:
                 address = eth.w3.personal.newAccount(passphrase)
+                if address:
+                    crud.coins_update(passphrase,address)
+                    rs.rpush("ethereum",address)
             except:
                 address =''
-            if address:
-                crud.coins_update(passphrase,address)
-                rs.rpush("ethereum",address)
+
         crud.close()
 
             
