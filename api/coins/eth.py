@@ -38,9 +38,9 @@ class Eth(object):
         # crud.close()
         # return address
         rs = redis.Redis(host='127.0.0.1',port=6379)
-        rs_len = rs.llen('eth')
+        rs_len = rs.llen('ethereum')
         if rs_len>1:
-            return rs.lpop('eth')
+            return rs.lpop('ethereum')
         return ''
 
         #return self.w3.personal.importRawKey(private_key,self.passphrase)

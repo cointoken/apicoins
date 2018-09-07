@@ -12,14 +12,14 @@ CELERY_IMPORTS = (
 #'tasks.task1'
 
 CELERYBEAT_SCHEDULE = {
-    'add-every-5-minutes': {
+    'add-every-20-minutes': {
         'task': 'tasks.task2.get_ethereum_addresses',
-        'schedule': timedelta(minutes=5),       # 每 5 分钟执行一次
+        'schedule': timedelta(minutes=20),       # 每 20 分钟执行一次
         'args': ()
     },
-    'add-every-20-minutes': {
+    'add-every-30-minutes': {
          'task': 'tasks.task1.import_deposits',
-         'schedule': timedelta(minutes=20),       # 每 20 分钟执行一次
+         'schedule': timedelta(minutes=30),       # 每 30 分钟执行一次
          'args': ()
     }
     # 'multiply-at-12-time': {
