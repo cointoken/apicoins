@@ -13,17 +13,24 @@ def autotransfer():
     btc_accounts = btc.listaccounts()
     for key,value in btc_accounts.items():
         amount = btc_accounts[key] 
-        if amount >= 0.1 and amount <= 1 : #hot wallet
-            txid = btc.sendfrom(key,"3FyyccCiTt3TUbvVXw3gsn6W5nRCUY1tPi",amount)
-        elif amount>1: #cold walllet
-            txid = btc.sendfrom(key,"1LAzU3gX58zBzKfbNXcyUZjhTeBVWJ7c1c",amount)
+        try:
+            amount = amount - amount*0.0005
+            if amount >= 0.1 and amount <= 1 : #hot wallet
+                txid = btc.sendfrom(key,"3FyyccCiTt3TUbvVXw3gsn6W5nRCUY1tPi",amount)
+            elif amount>1: #cold walllet
+                txid = btc.sendfrom(key,"1LAzU3gX58zBzKfbNXcyUZjhTeBVWJ7c1c",amount)
+        except:
+            pass
 
     ltc = Btc(8337,'exmoney','TEIXMLW34803EDDKDLWQPAPW18389DKWOOPEOP')
     ltc_accounts = ltc.listaccounts()
     for key,value in ltc_accounts.items():
         amount = ltc_accounts[key]
-        if amount >=20:
-            txid = ltc.sendfrom(key,"LXycyyLyE6VmdkJBtsZKPLqbZQWrRZTBu6",amount)
+        try:
+            if amount >=20:
+                txid = ltc.sendfrom(key,"LXycyyLyE6VmdkJBtsZKPLqbZQWrRZTBu6",amount)
+        except:
+            pass
 
     usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)

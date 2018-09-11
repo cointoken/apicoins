@@ -9,7 +9,7 @@ CELERY_IMPORTS = (
     'tasks.task1',
     'tasks.task2'
 )
-#'tasks.task1'
+#'tasks.task'
 
 CELERYBEAT_SCHEDULE = {
     'add-every-10-minutes': {

@@ -27,7 +27,10 @@ def import_deposits():
                 datas = j['data']
                 
                 for d in datas:
-                    de = Deposits(d['id'],d['currency'],d['email'],d['phone_number'],float(d['amount']),float(d['fee']),d['fund_uid'],datetime.strptime(d['created_at'],'%Y-%m-%d %H:%M:%S'))
+                    fee = 0 if d['fee'] is None else float(d['fee'])
+                    amount = 0 if d['amount'] is None else float(d['amount'])
+                    
+                    de = Deposits(d['id'],d['currency'],d['email'],d['phone_number'],amount,fee,d['fund_uid'],datetime.strptime(d['created_at'],'%Y-%m-%d %H:%M:%S'))
                     crud.deposits_insert(de)
         except:
             crud.close()
