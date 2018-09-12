@@ -66,7 +66,7 @@ class Eth(object):
             #  if flag:
             tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
             try:
-                txid = self.w3.personal.sendTransaction(tx, 'stopwatch mascot sectional mounted finer neurosis malformed twerp')
+                txid = self.w3.personal.sendTransaction(tx, passphrase)
                 return txid
             except:
                 return 'error'
