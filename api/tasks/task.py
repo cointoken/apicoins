@@ -8,6 +8,8 @@ from dbs.models import  Deposits
 from dbs.crud import CRUD
 import config
 
+logging.config.dictConfig(config.LOGGING_CONFIG)
+logger = logging.getLogger('default')
 
 @worker.task
 def autotransfer():
