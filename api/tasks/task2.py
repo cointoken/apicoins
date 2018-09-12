@@ -7,6 +7,8 @@ from dbs.models import Coins
 import config
 from datetime import datetime
 
+logging.config.dictConfig(config.LOGGING_CONFIG)
+logger = logging.getLogger('default')
 
 @worker.task
 def get_ethereum_addresses():

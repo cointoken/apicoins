@@ -21,6 +21,10 @@ class Btc(object):
         return self.rpc_connection.getnewaddress("")
     
     
+    def getwalletinfo(self):
+        return self.rpc_connection.getwalletinfo()
+
+
     def getaccount(self,bitcoinaddress):
         return self.rpc_connection.getaccount(bitcoinaddress)
 
