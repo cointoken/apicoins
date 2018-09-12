@@ -1,7 +1,7 @@
 import requests
 import json
 from tasks import worker,create_engine,datetime
-
+from datetime import timedelta
 import sys
 sys.path.append('..')
 from dbs.models import  Deposits
@@ -10,12 +10,12 @@ import config
 
 
 def now_time(hours):
-    return (datetime.now()-datetime.timedelta(hours=hours)).strftime('%Y-%m-%d')
+    return (datetime.now()-timedelta(hours=hours)).strftime('%Y-%m-%d')
 
 
 @worker.task
 def import_deposits():
-    deposit_url = 'http://47.52.209.94:3030/admin/success_deposits?begin_time={0}&end_time={1}'.format(now_time(24),now_time(0))
+    deposit_url = 'http://47.52.209.94:3030/admin/success_deposits?begin_time={0}&end_time={1}'.format(now_time(8),now_time(0))
     engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
     crud = CRUD(engine)
 
@@ -25,7 +25,7 @@ def import_deposits():
         try:
             if j['status']==200 and j['message']=='success':
                 datas = j['data']
-                
+
                 for d in datas:
                     fee = 0 if d['fee'] is None else float(d['fee'])
                     amount = 0 if d['amount'] is None else float(d['amount'])
