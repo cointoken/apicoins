@@ -3,6 +3,7 @@ from coins.btc import Btc
 from coins.eth import Eth
 import logging
 import logging.config
+import sys
 sys.path.append('..')
 from dbs.models import  Deposits
 from dbs.crud import CRUD
