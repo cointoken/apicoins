@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 #from eth_rpc_client import Client # ethereum-rpc-client
 from web3 import Web3, HTTPProvider
 from sqlalchemy import create_engine
@@ -20,6 +21,23 @@ class Eth(object):
         self.w3 = Web3(HTTPProvider('http://127.0.0.1:{0}'.format(rpc_port), request_kwargs={'timeout': 60}))
         self.name = name
         self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+
+
+    '''
+    检索 gas价格
+    '''
+    def generateGasPrice(self):
+        return self.w3.eth.generateGasPrice()
+
+
+    '''
+    获取数量
+    '''
+    def getBalance(self,account,block_identifier):
+        if not block_identifier:
+            block_identifier = self.w3.eth.defaultBlock
+        if account:
+            return self.w3.eth.getBalance(account,block_identifier)
 
 
     def getnewaddress(self):
@@ -57,32 +75,40 @@ class Eth(object):
 
 
     def sendTransaction(self,from_,to,amount):
-        crud = CRUD(self.engine)
-        passphrase = str(crud.coins_query_from_address(from_))
-        crud.close()
-        if passphrase and from_ and to:
-            # flag = self.w3.personal.unlockAccount(from_, passphrase)
-            # print(flag,passphrase)
-            #  if flag:
-            tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
-            try:
-                txid = self.w3.personal.sendTransaction(tx, passphrase)
-                return txid
-            except:
-                return 'error'
-
-
-    def test(self,address):
-        if address:
+        if from_ and amount>0 and to:
             crud = CRUD(self.engine)
-            passphrase = str(crud.coins_query_from_address(address))
+            passphrase = str(crud.coins_query_from_address(from_))
             crud.close()
             if passphrase:
-                flag = self.w3.personal.unlockAccount(address, passphrase)
+                flag = self.w3.personal.unlockAccount(from_, passphrase)
                 if flag:
-                    return 'True'
-                else:
-                    return "False"
+                    # if self.name=='eth':
+                    #     gas_amount = self.w3.eth.gasPrice * 2100
+                    #     tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')-gas_amount }
+                    # else:
+                    #     pass
+                    tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
+                    try:
+                        txid = self.w3.personal.sendTransaction(tx, passphrase)
+                        return True,txid
+                    except Exception as e:
+                        return False,repr(e)
+                return False,'the account dont unlock'
+            return False,'passphrase is null'
+        return False,'address is null or amount==0'
+
+
+    # def test(self,address):
+    #     if address:
+    #         crud = CRUD(self.engine)
+    #         passphrase = str(crud.coins_query_from_address(address))
+    #         crud.close()
+    #         if passphrase:
+    #             flag = self.w3.personal.unlockAccount(address, passphrase)
+    #             if flag:
+    #                 return 'True'
+    #             else:
+    #                 return "False"
 
 
     @staticmethod

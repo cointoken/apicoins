@@ -133,12 +133,12 @@ def validateaddress(name,address):
 #     key = instances[name].dumpprivkey(address)
 #     return get_success_json('dumpprivkey','info',key)
 
-@app.route('/api/v1/test/<string:address>')
-def test(address):
-    if address:
-        instances['eth'] = objects['eth']
-        data = instances['eth'].test(address)
-        return get_success_json('dumpprivkey','info',data)
+# @app.route('/api/v1/test/<string:address>')
+# def test(address):
+#     if address:
+#         instances['eth'] = objects['eth']
+#         data = instances['eth'].test(address)
+#         return get_success_json('dumpprivkey','info',data)
 
 
 
