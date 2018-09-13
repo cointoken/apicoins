@@ -87,6 +87,8 @@ class Eth(object):
                     #     tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')-gas_amount }
                     # else:
                     #     pass
+                if self.name == 'etc':
+                    to = self.w3.toChecksumAddress(to)
                 tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
                 try:
                     txid = self.w3.personal.sendTransaction(tx, passphrase)
