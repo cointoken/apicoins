@@ -55,11 +55,16 @@ class Eth(object):
         # crud.coins_update(passphrase,address)
         # crud.close()
         # return address
-        rs = redis.Redis(host='127.0.0.1',port=6379)
-        rs_len = rs.llen('ethereum')
         address = ''
-        if rs_len>1:
-            address = bytes.decode(rs.lpop('ethereum'))
+        rs = redis.Redis(host='127.0.0.1',port=6379)
+        if self.name =='eth':
+            rs_len = rs.llen('ethereum')
+            if rs_len>0:
+                address = bytes.decode(rs.lpop('ethereum'))
+        elif self.name=='etc':
+            rs_len = rs.llen('etc')
+            if rs_len>0:
+                address = bytes.decode(rs.lpop('etc'))
             #return bytes.decode(rs.lpop('ethereum'))
         return address
 
