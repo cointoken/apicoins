@@ -38,8 +38,8 @@ def autotransfer():
     #         log.error('litecoin:'+repr(e))
 
     # usdt = Btc(8338,'usdt','DJKQIEOOKDKLAKQOOEXMXMLLWOO')
-    # engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-    # crud = CRUD(engine)
+    engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+    crud = CRUD(engine)
     # usdt_datas = crud.deposits_query_from_currency('usdt')
     # if len(usdt_datas)>0:
     #     for d in usdt_datas:
