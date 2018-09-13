@@ -80,20 +80,19 @@ class Eth(object):
             passphrase = str(crud.coins_query_from_address(from_))
             crud.close()
             if passphrase:
-                flag = self.w3.personal.unlockAccount(from_, passphrase)
-                if flag:
+                # flag = self.w3.personal.unlockAccount(from_, passphrase)
+                # if flag:
                     # if self.name=='eth':
                     #     gas_amount = self.w3.eth.gasPrice * 2100
                     #     tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')-gas_amount }
                     # else:
                     #     pass
-                    tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
-                    try:
-                        txid = self.w3.personal.sendTransaction(tx, passphrase)
-                        return True,txid
-                    except Exception as e:
-                        return False,repr(e)
-                return False,'the account dont unlock'
+                tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
+                try:
+                    txid = self.w3.personal.sendTransaction(tx, passphrase)
+                    return True,txid
+                except Exception as e:
+                    return False,repr(e)
             return False,'passphrase is null'
         return False,'address is null or amount==0'
 
