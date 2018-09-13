@@ -85,6 +85,7 @@ class Eth(object):
             passphrase = str(crud.coins_query_from_address(from_))
             crud.close()
             if passphrase:
+                tx = ''
                 # flag = self.w3.personal.unlockAccount(from_, passphrase)
                 # if flag:
                     # if self.name=='eth':
@@ -94,7 +95,10 @@ class Eth(object):
                     #     pass
                 if self.name == 'etc':
                     to = self.w3.toChecksumAddress(to)
-                tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
+                    tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')}
+                elif self.name == 'eth':
+                    gas_amount = self.w3.eth.gasPrice * 2100
+                    tx = { 'from': from_,'to': to,'value':self.w3.toWei(amount,'ether')-gas_amount }
                 try:
                     txid = self.w3.personal.sendTransaction(tx, passphrase)
                     return True,txid

@@ -80,7 +80,7 @@ def autotransfer():
                     if result[0]:
                         crud.deposits_update_from_deposit_id(d.deposit_id,'',result[1])
                     else:
-                        log.error('ethereum:'+result[1])
+                        log.error('ethereum cash:'+result[1])
             except Exception as e:
                 log.error('ethereum cash:'+repr(e))
 
