@@ -58,7 +58,7 @@ def autotransfer():
         for d in eth_datas:
             try:
                 cc_amount = eth.getBalance(d.from_address,'')
-                if cc_amount>d.amount:
+                if cc_amount>=d.amount:
                     result  = eth.sendTransaction(d.from_address,eth_to_address,d.amount)
                     if result[0]:
                         crud.deposits_update_from_deposit_id(d.deposit_id,'',result[1])
@@ -75,7 +75,7 @@ def autotransfer():
         for d in etc_datas:
             try:
                 cc_amount = etc.getBalance(d.from_address,'')
-                if cc_amount>d.amount:
+                if cc_amount>=d.amount:
                     result = etc.sendTransaction(d.from_address,etc_to_address,d.amount)
                     if result[0]:
                         crud.deposits_update_from_deposit_id(d.deposit_id,'',result[1])
